@@ -2,15 +2,21 @@ const { User } = require('./models');
 const Authentication = require('../utils/auth')
 
 exports.regsiterUser = async(req, res) => {
-    // #swagger.tags = ["auth"]   
-    /* #swagger.parameters["email"] = {
-            in: "headers"
+    //  #swagger.tags = ["auth"]   
+    /*  #swagger.parameters["email"] = {
+            in: "headers",
+            required: true,
+            type: "string"
     }*/
-    /* #swagger.parameters["password"] = {
-            in: "headers"
+    /*  #swagger.parameters["password"] = {
+            in: "headers",
+            required: true,
+            type: "string"
     }*/ 
-    /* #swagger.parameters["name"] = {
-            in: "headers"
+    /*  #swagger.parameters["name"] = {
+            in: "headers",
+            required: true,
+            type: "string"
     }*/ 
     try{
         var { name, email, password } = req.headers;
@@ -32,10 +38,14 @@ exports.regsiterUser = async(req, res) => {
 exports.loginUser = async(req,res) => {
     //  #swagger.tags = ["auth"]
     /*  #swagger.parameters["email"] = {
-            in: "headers"
+            in: "headers",
+            required: true,
+            type: "string"
     }*/
     /*  #swagger.parameters["password"] = {
-            in: "headers"
+            in: "headers",
+            required: true,
+            type: "string"
     }*/
     var {email, password} = req.headers;
     try {

@@ -1,6 +1,7 @@
 const models = require('./models');
 
 exports.getFAQ = async (req, res) => {
+    // #swagger.tags = ['faq']
     try {
         var faq = await models.FAQ.findById(req.params.id);
         if (faq) {
@@ -15,10 +16,15 @@ exports.getFAQ = async (req, res) => {
 }
 
 exports.getAllFAQ = async (req, res) => {
+    // #swagger.tags = ['faq']
     // Should have the cahtbot quality
+    res.json({
+        faqs: []
+    })
 }
 
 exports.raiseFAQTicket = async (req, res) => {
+    // #swagger.tags = ['faq']
     try {
         const newFaq = new models.FAQ({
             question: req.body.question
@@ -31,10 +37,12 @@ exports.raiseFAQTicket = async (req, res) => {
 }
 
 exports.updateFAQ = async (req, res) => {
+    // #swagger.tags = ['faq']
     try {
         var faq = await models.FAQ.findByIdAndUpdate(
             req.params.id,
-            {
+            {   
+                question: req.body.question,
                 answer: req.body.answer,
                 tags: req.body.tags,
                 status: "Answered"

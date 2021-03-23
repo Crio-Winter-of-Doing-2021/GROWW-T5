@@ -19,6 +19,10 @@
     {
       "name": "order",
       "description": "Order related apis"
+    },
+    {
+      "name": "faq",
+      "description": "FAQ related apis"
     }
   ],
   "schemes": [
@@ -42,16 +46,19 @@
           {
             "name": "email",
             "in": "headers",
+            "required": true,
             "type": "string"
           },
           {
             "name": "password",
             "in": "headers",
+            "required": true,
             "type": "string"
           },
           {
             "name": "name",
             "in": "headers",
+            "required": true,
             "type": "string"
           }
         ],
@@ -75,11 +82,13 @@
           {
             "name": "email",
             "in": "headers",
+            "required": true,
             "type": "string"
           },
           {
             "name": "password",
             "in": "headers",
+            "required": true,
             "type": "string"
           }
         ],
@@ -135,7 +144,29 @@
           "product"
         ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "specifications": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -206,7 +237,20 @@
             "type": "string"
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       },
       "put": {
         "tags": [
@@ -219,9 +263,29 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
     "/api/v1/order/": {
@@ -231,15 +295,172 @@
         ],
         "description": "",
         "parameters": [],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       },
       "post": {
         "tags": [
           "order"
         ],
         "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "quantity": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "orderType": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/faq/{id}": {
+      "get": {
+        "tags": [
+          "faq"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "faq"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "question": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "answer": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "tags": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/faq": {
+      "get": {
+        "tags": [
+          "faq"
+        ],
+        "description": "",
         "parameters": [],
         "responses": {}
+      },
+      "post": {
+        "tags": [
+          "faq"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "question": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     }
   },

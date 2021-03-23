@@ -6,8 +6,7 @@ const faqSchema = new mongoose.Schema({
         required: true
     },
     answer: {
-        type: String,
-        required: true
+        type: String
     },
     tags: [{type: String}],
     status: {

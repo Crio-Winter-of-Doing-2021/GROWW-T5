@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const logger = require('./middleware/logger');
 const validation = require('./middleware/validation');
 var cors = require('cors');
+var session = require('express-session');
 
 app = express()
 
@@ -29,6 +30,13 @@ function createApp() {
 
     // INITIALIZING MIDDLEWARES
     app.use(cors());
+    app.set('trust proxy', 1); // trust first proxy
+    app.use(session({
+        secret: process.env.SECRET_KEY || "secret!",
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: true }
+    }));
     app.use(express.json());
     app.use(express.urlencoded({extended : false}));
     app.use(logger);
@@ -37,6 +45,7 @@ function createApp() {
     app.use('/api/v1/auth', require('./api/auth/routes'));
     app.use('/api/v1/product', require('./api/products/routes'));
     app.use('/api/v1/order', require('./api/orders/routes'));
+    app.use('/api/v1/faq', require('./api/faq/routes'));
 
     app.use(validation);
     // SWAGGER

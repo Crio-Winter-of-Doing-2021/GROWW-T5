@@ -23,6 +23,10 @@ const doc = {
         {
             "name": "order",
             "description": "Order related apis"
+        },
+        {
+            "name": "faq",
+            "description": "FAQ related apis"
         }
     ],
     responses: {
