@@ -44,7 +44,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "email",
+            "name": "$email",
             "in": "headers",
             "required": true,
             "type": "string"

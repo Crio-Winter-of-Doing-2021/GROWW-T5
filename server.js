@@ -59,7 +59,8 @@ function runApp() {
     const PORT = process.env.PORT || 4000
     const HOST = process.env.HOST || 'localhost'
     app = createApp();
-    app.listen(PORT, () => console.log(`listening on port http://${HOST}:${PORT}`));
+    app.listen(PORT, () => console.log(`Server running on http://${HOST}:${PORT}`));
+    module.exports = app;
 }
 
 runApp();

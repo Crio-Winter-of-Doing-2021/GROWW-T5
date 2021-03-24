@@ -1,4 +1,5 @@
 const models = require('./models');
+const Context = require('../utils/context');
 
 exports.getFAQ = async (req, res) => {
     // #swagger.tags = ['faq']
@@ -17,9 +18,14 @@ exports.getFAQ = async (req, res) => {
 
 exports.getAllFAQ = async (req, res) => {
     // #swagger.tags = ['faq']
-    // Should have the cahtbot quality
+    const contextManager = new Context();
+    const context = await contextManager.generateContext(req);
+    const tags = await contextManager.mapContextToTags(context);
+    console.log(tags);
+    const faqs = await models.FAQ.find().all('tags', tags);
+
     res.json({
-        faqs: []
+        faqs: faqs
     })
 }
 

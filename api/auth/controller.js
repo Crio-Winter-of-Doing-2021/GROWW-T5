@@ -18,7 +18,7 @@ exports.regsiterUser = async(req, res) => {
             required: true,
             type: "string"
     }*/ 
-    try{
+    try {
         var { name, email, password } = req.headers;
         var user = await User.findOne({ email: email});
         if(!user){

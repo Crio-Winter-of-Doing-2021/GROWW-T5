@@ -3,10 +3,15 @@ const { User } = require('../auth/models');
 const { Order } = require('../orders/models');
 
 class Context {
-    constructor();
+    constructor(){};
+
+    // page ids to tags
+    // pageIdtoTag = {
+        
+    // };
 
     // get context parameters from req object
-    generateContext = async(req) => {
+    async generateContext(req) {
 
         // Defining context
         var context = {}
@@ -18,31 +23,29 @@ class Context {
             user = await User.findById(userId);
         }
         context.user = user;
-        context.pageId = req.body.pageId;
-
-        if (req.body.pageId == "") {
-            
-        }
+        // context.pageTag = this.pageIdtoTag[req.body.pageId];
 
         return context;
     }
 
-    pageIdtoTag = {
+    // mapping context to tags
+    async mapContextToTags(context) {
         
-    }
-
-    mapContextToTags = async(context) => {
-        // mapping context to tags
         var tags = [];
+
         if (!context.user) {
-            tags.push("accountCreation");
-            tags.push("startInvesting");
+            tags.push("Account Creation");
         } else {
             if (!context.user.kycStatus) {
                 tags.push("KYC");
             }
+            if (Order.find({userId: context.user.userId}).length === 0) {
+                tags.push("Start Investing");
+            }
         }
-        
+        // tags.push(context.pageTag)
         return tags;
     }
 }
+
+module.exports = Context;

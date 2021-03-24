@@ -5,9 +5,9 @@ class Authentication {
         this.secertKey = process.env.SECRET_KEY || "secret!";
     }
     
-    createAccessToken(userId) {
+    createAccessToken(data) {
         const payload = {
-            sub: userId,
+            sub: data,
             iat: Date.now()
         }
         const token = jwt.sign(payload, this.secertKey, {expiresIn: (60*60*24*15)})
