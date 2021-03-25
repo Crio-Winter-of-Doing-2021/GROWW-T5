@@ -6,9 +6,11 @@ class Context {
     constructor(){};
 
     // page ids to tags
-    // pageIdtoTag = {
-        
-    // };
+    pageIdtoTag = {
+        exploreStocks: "Stocks",
+        exploreMF: "Mutual Funds",
+        orders: "Orders"
+    };
 
     // get context parameters from req object
     async generateContext(req) {
@@ -23,7 +25,7 @@ class Context {
             user = await User.findById(userId);
         }
         context.user = user;
-        // context.pageTag = this.pageIdtoTag[req.body.pageId];
+        context.pageTag = this.pageIdtoTag[req.query.pageId];
 
         return context;
     }
@@ -43,7 +45,7 @@ class Context {
                 tags.push("Start Investing");
             }
         }
-        // tags.push(context.pageTag)
+        tags.push(context.pageTag)
         return tags;
     }
 }

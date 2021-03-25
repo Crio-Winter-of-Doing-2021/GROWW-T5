@@ -2,7 +2,6 @@ const models = require('./models');
 const Context = require('../utils/context');
 
 exports.getFAQ = async (req, res) => {
-    // #swagger.tags = ['faq']
     try {
         var faq = await models.FAQ.findById(req.params.id);
         if (faq) {
@@ -13,52 +12,64 @@ exports.getFAQ = async (req, res) => {
     } catch (err) {
         res.status(500).json({msg: err.message});
     }
-    
+}
+
+async function faqBasedOnContext(req, res) {
+    const contextManager = new Context();
+    const context = await contextManager.generateContext(req);
+    const tags = await contextManager.mapContextToTags(context);    
+    const faqs = await models.FAQ.find().all('tags', tags)
+        .limit(5);
+    if (faqs.length > 0) {
+        return({
+            faqs: faqs,
+            reply: null
+        });
+    } else {
+        return({
+            faqs: null,
+            reply: null
+        });
+    }
 }
 
 exports.getAllFAQ = async (req, res) => {
-    // #swagger.tags = ['faq']
-
-    if (req.query.message) {
-        const faqs = await models.FAQ.find({$text: {$search: req.query.message}})
-            .sort( { score: { $meta: "textScore" } } )
-            .limit(5);
-
-        if (faqs.length > 0) {
-            res.json({
-                faqs: faqs
-            })
-        } else {
-            const contextManager = new Context();
-            const context = await contextManager.generateContext(req);
-            const tags = await contextManager.mapContextToTags(context);
-            console.log(tags);
-            const faqs = await models.FAQ.find().all('tags', tags)
+    try {
+        if (req.query.message) {
+            const faqs = await models.FAQ.find({$text: {$search: req.query.message}})
+                .sort( { score: { $meta: "textScore" } } )
                 .limit(5);
+
+            for (var i = 0; i < faqs.length; i++ ) {
+                if (faqs[i].question == req.query.message){
+                    res.json({
+                        faqs: null,
+                        reply: faqs[i].answer
+                    });
+                    return;
+                }
+            }
+
             if (faqs.length > 0) {
                 res.json({
-                    faqs: faqs
+                    faqs: faqs,
+                    reply: null
                 })
             } else {
-                res.status(200);
+                var response = await faqBasedOnContext(req);
+                res.json(response);
             }
-            
+        } else {
+            var response = await faqBasedOnContext(req);
+            res.json(response);
         }
-    } else {
-        const contextManager = new Context();
-        const context = await contextManager.generateContext(req);
-        const tags = await contextManager.mapContextToTags(context);
-        console.log(tags);
-        const faqs = await models.FAQ.find().all('tags', tags);
-
-        res.json({
-            faqs: faqs
-        })
+    } catch (e) {
+        console.log(e.name);
+        res.status(500).json({msg: "Server Error"})
     }
 }
 
 exports.raiseFAQTicket = async (req, res) => {
-    // #swagger.tags = ['faq']
     try {
         const newFaq = new models.FAQ({
             question: req.body.question
@@ -71,7 +82,6 @@ exports.raiseFAQTicket = async (req, res) => {
 }
 
 exports.updateFAQ = async (req, res) => {
-    // #swagger.tags = ['faq']
     try {
         var faq = await models.FAQ.findByIdAndUpdate(
             req.params.id,

@@ -1,7 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const swaggerUi = require('swagger-ui-express');
-const swaggerFile = require('./swagger_output.json');
 const dotenv = require('dotenv');
 const logger = require('./middleware/logger');
 const validation = require('./middleware/validation');
@@ -48,9 +46,7 @@ function createApp() {
     app.use('/api/v1/faq', require('./api/faq/routes'));
 
     app.use(validation);
-    // SWAGGER
-    app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
-
+    
     return app;
 }
 
