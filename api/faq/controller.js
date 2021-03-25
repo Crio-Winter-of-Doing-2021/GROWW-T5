@@ -18,15 +18,43 @@ exports.getFAQ = async (req, res) => {
 
 exports.getAllFAQ = async (req, res) => {
     // #swagger.tags = ['faq']
-    const contextManager = new Context();
-    const context = await contextManager.generateContext(req);
-    const tags = await contextManager.mapContextToTags(context);
-    console.log(tags);
-    const faqs = await models.FAQ.find().all('tags', tags);
 
-    res.json({
-        faqs: faqs
-    })
+    if (req.query.message) {
+        const faqs = await models.FAQ.find({$text: {$search: req.query.message}})
+            .sort( { score: { $meta: "textScore" } } )
+            .limit(5);
+
+        if (faqs.length > 0) {
+            res.json({
+                faqs: faqs
+            })
+        } else {
+            const contextManager = new Context();
+            const context = await contextManager.generateContext(req);
+            const tags = await contextManager.mapContextToTags(context);
+            console.log(tags);
+            const faqs = await models.FAQ.find().all('tags', tags)
+                .limit(5);
+            if (faqs.length > 0) {
+                res.json({
+                    faqs: faqs
+                })
+            } else {
+                res.status(200);
+            }
+            
+        }
+    } else {
+        const contextManager = new Context();
+        const context = await contextManager.generateContext(req);
+        const tags = await contextManager.mapContextToTags(context);
+        console.log(tags);
+        const faqs = await models.FAQ.find().all('tags', tags);
+
+        res.json({
+            faqs: faqs
+        })
+    }
 }
 
 exports.raiseFAQTicket = async (req, res) => {

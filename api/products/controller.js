@@ -1,7 +1,6 @@
 const models = require('./models');
 
 exports.createProduct = async(req, res) => {
-    // #swagger.tags = ['product']
     try {
         var specifications;
         if (req.body.category === "Mutual Fund") {
@@ -26,29 +25,39 @@ exports.createProduct = async(req, res) => {
 }
 
 exports.fetchProduct = async(req, res) => {
-    // #swagger.tags = ['product']
-    let product = await models.Product.findById(req.params.id);
-    var response = await product.getPayload();
-    res.json(response);
+    try{
+        let product = await models.Product.findById(req.params.id);
+        var response = await product.getPayload();
+        res.json(response);
+    } catch (e) {
+        // if product is not found or the id is wrong
+        if (e.name == "CastError" || e.name == "TypeError") {
+            res.status(404).json({msg: "Not Found"})
+        } else {
+            res.status(500).json({msg: "Server Error"})
+        }
+    }
 }
 
 exports.fetchAllProduct = async(req, res) => {
-    // #swagger.tags = ['product']
-    var products = await models.Product.find({category: req.query.category});
-
-    for(var i = 0; i < products.length; i++) {
-        products[i] = await products[i].getPayload();
+    try {
+        var products = await models.Product.find({category: req.query.category});
+        for(var i = 0; i < products.length; i++) {
+            products[i] = await products[i].getPayload();
+        }
+        res.json(products);
+    } catch (e){
+        console.log(e.name);
+        res.status(500).json({msg: "Server Error"});
     }
-
-    res.json(products);
 }
 
 exports.updateProduct = async(req, res) => {
-    // #swagger.tags = ['product']
     try {
         models.Product.findByIdAndUpdate(req.params.id, req.body)
         .then(() => res.json({msg: 'Success'}));
     } catch (err) {
-        res.json(err);
+        console.log(err.name);
+        res.status(500).json({msg: "Server Error"});
     }  
 }

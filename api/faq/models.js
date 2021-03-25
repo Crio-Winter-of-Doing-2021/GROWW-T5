@@ -16,4 +16,5 @@ const faqSchema = new mongoose.Schema({
         default: "Unanswered"
     }
 })
+faqSchema.index({question: 'text'});
 exports.FAQ = new mongoose.model('FAQ', faqSchema);

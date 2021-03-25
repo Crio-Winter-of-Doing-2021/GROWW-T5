@@ -8,7 +8,7 @@ var router = express.Router();
 
 router.get('/:id', requireLogin, controller.getOrder);
 router.get('/', requireLogin, controller.getAllOrder);
-router.post('/', requireLogin, controller.placeOrder);
-router.put('/:id', controller.updateOrderStatus);
+router.post('/', requireLogin, validate(validator.placeOrderPostIn, {}, {allowUnknown: true}), controller.placeOrder);
+router.put('/:id', requireLogin, validate(validator.updateOrderStatusPutIn, {}, {allowUnknown: true}), controller.updateOrderStatus);
 
 module.exports = router;

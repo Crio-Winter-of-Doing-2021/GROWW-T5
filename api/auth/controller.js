@@ -2,22 +2,6 @@ const { User } = require('./models');
 const Authentication = require('../utils/auth')
 
 exports.regsiterUser = async(req, res) => {
-    //  #swagger.tags = ["auth"]   
-    /*  #swagger.parameters["email"] = {
-            in: "headers",
-            required: true,
-            type: "string"
-    }*/
-    /*  #swagger.parameters["password"] = {
-            in: "headers",
-            required: true,
-            type: "string"
-    }*/ 
-    /*  #swagger.parameters["name"] = {
-            in: "headers",
-            required: true,
-            type: "string"
-    }*/ 
     try {
         var { name, email, password } = req.headers;
         var user = await User.findOne({ email: email});
@@ -36,17 +20,6 @@ exports.regsiterUser = async(req, res) => {
 }
 
 exports.loginUser = async(req,res) => {
-    //  #swagger.tags = ["auth"]
-    /*  #swagger.parameters["email"] = {
-            in: "headers",
-            required: true,
-            type: "string"
-    }*/
-    /*  #swagger.parameters["password"] = {
-            in: "headers",
-            required: true,
-            type: "string"
-    }*/
     var {email, password} = req.headers;
     try {
         var user = await User.findOne({email: email});
@@ -68,12 +41,10 @@ exports.loginUser = async(req,res) => {
 }
 
 exports.logoutUser = async(req,res) => {
-    // #swagger.tags = ["auth"]
     res.json({msg: "Success"});
 }
 
 exports.updateKycStatus = async(req,res) => {
-    // #swagger.tags = ["auth"] 
     try{
         var user = await User.findByIdAndUpdate(req.data, {kycStatus: true});
         res.status(200).json({msg: "Success"});
