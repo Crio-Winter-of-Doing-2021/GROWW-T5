@@ -1,0 +1,35 @@
+{
+  "name": "groww-externship",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha — timeout 10000",
+    "start": "node server.js",
+    "debug": "nodemon app",
+    "swagger-autogen": "node swagger.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "express-validation": "^3.0.8",
+    "jsonwebtoken": "^8.5.1",
+    "mocha": "^8.3.2",
+    "moment": "^2.29.1",
+    "mongoose": "^5.11.19",
+    "nodemon": "^2.0.7",
+    "stopword": "^1.0.7",
+    "swagger-autogen": "^2.7.1",
+    "swagger-ui-express": "^4.1.6"
+  }
+}
