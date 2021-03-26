@@ -9,8 +9,7 @@
   "scripts": {
     "test": "mocha — timeout 10000",
     "start": "node server.js",
-    "debug": "nodemon app",
-    "swagger-autogen": "node swagger.js"
+    "debug": "nodemon app"
   },
   "author": "",
   "license": "ISC",

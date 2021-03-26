@@ -25,8 +25,9 @@ class Context {
             user = await User.findById(userId);
             context.user = user;
         }
-        context.pageTag = this.pageIdtoTag[req.query.pageId];
-
+        if (req.query.pageId) {
+            context.pageTag = this.pageIdtoTag[req.query.pageId];
+        }
         return context;
     }
 
@@ -45,7 +46,9 @@ class Context {
                 tags.push("Start Investing");
             }
         }
-        tags.push(context.pageTag)
+        if (context.pageTag) {
+            tags.push(context.pageTag)
+        }   
         return tags;
     }
 }

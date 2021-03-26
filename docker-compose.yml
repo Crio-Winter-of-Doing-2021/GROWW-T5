@@ -11,7 +11,7 @@ services:
     restart: on-failure
     command: npm run debug
     environment:
-      - DBURI='mongodb://root:example@mongo:27017'
+      - DBURI='mongodb://root:example@mongo:27017/ExternDB?authSource=admin&w=1'
       - HOST=0.0.0.0
   
   mongo:
