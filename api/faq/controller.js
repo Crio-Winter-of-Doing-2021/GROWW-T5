@@ -1,5 +1,6 @@
 const models = require('./models');
 const Context = require('../utils/context');
+const { model } = require('mongoose');
 
 exports.getFAQ = async (req, res) => {
     try {
@@ -36,19 +37,18 @@ async function faqBasedOnContext(req, res) {
 exports.getAllFAQ = async (req, res) => {
     try {
         if (req.query.message) {
+            const reply = await models.FAQ.find({question: req.query.message});
+            if (reply) {
+                res.json({
+                    faqs: null,
+                    reply: reply
+                })
+                return;
+            }
+            
             const faqs = await models.FAQ.find({$text: {$search: req.query.message}})
                 .sort( { score: { $meta: "textScore" } } )
                 .limit(5);
-
-            for (var i = 0; i < faqs.length; i++ ) {
-                if (faqs[i].question == req.query.message){
-                    res.json({
-                        faqs: null,
-                        reply: faqs[i].answer
-                    });
-                    return;
-                }
-            }
 
             if (faqs.length > 0) {
                 res.json({
