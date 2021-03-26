@@ -1,16 +1,18 @@
 version: '3'
 
 services:
-  # server:
-    # build: .
-    # ports: 
-    #   - 4000:4000
-    # volumes: 
-    #   - .:/user/src/app
-    # restart: on-failure
-    # environment:
-    #   - DBURI='mongodb://root:example@mongo:27017'
-    #   - HOST=0.0.0.0
+  server:
+    build: .
+    image: growwserver:v1
+    ports: 
+      - 4000:4000
+    volumes: 
+      - .:/usr/src/app
+    restart: on-failure
+    command: npm run debug
+    environment:
+      - DBURI='mongodb://root:example@mongo:27017'
+      - HOST=0.0.0.0
   
   mongo:
     image: mongo:4.4.3

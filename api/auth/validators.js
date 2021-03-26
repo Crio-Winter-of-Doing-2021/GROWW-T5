@@ -1,6 +1,6 @@
-const { Joi } = require('express-validation');
+const { Joi, validate } = require('express-validation');
 
-exports.registerPostIn = {
+const registerPostIn = {
     headers: Joi.object({
         name: Joi.string()
             .required(),
@@ -13,8 +13,9 @@ exports.registerPostIn = {
         role: Joi.string()
     })
 }
+exports.registerValidation = validate(registerPostIn, {}, {allowUnknown: true})
 
-exports.loginPostIn = {
+const loginPostIn = {
     headers: Joi.object({
         email: Joi.string()
             .email()
@@ -24,3 +25,4 @@ exports.loginPostIn = {
             .required(),
     })
 }
+exports.loginValidation = validate(loginPostIn, {}, {allowUnknown: true})

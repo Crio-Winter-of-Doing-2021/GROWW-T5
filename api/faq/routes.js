@@ -8,7 +8,7 @@ var router = express.Router();
 
 router.get('/:id', controller.getFAQ);
 router.get('', controller.getAllFAQ);
-router.post('', requireLogin, controller.raiseFAQTicket);
+router.post('', requireLogin, validator.raiseTicketValidator, controller.raiseFAQTicket);
 router.put('/:id', requireLogin, controller.updateFAQ);
 
 module.exports = router;

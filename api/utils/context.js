@@ -23,8 +23,8 @@ class Context {
             const auth = new Authentication();
             const userId = auth.verifyAccessToken(req.headers.accesstoken);
             user = await User.findById(userId);
+            context.user = user;
         }
-        context.user = user;
         context.pageTag = this.pageIdtoTag[req.query.pageId];
 
         return context;
