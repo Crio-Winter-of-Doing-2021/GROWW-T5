@@ -4,7 +4,7 @@ import { Modal } from "react-responsive-modal";
 import Login from "./Login";
 import Signup from "./Signup";
 
-function AuthModal({ open, onCloseModal }) {
+function AuthModal({ open, onCloseModal, setIsUSerLogged }) {
   const [login, setlogin] = useState(false);
 
   return (
@@ -26,7 +26,15 @@ function AuthModal({ open, onCloseModal }) {
             </FadeInContainer>
           </TextWrapper>
         </ImgContainer>
-        {login ? <Login setlogin={setlogin} /> : <Signup setlogin={setlogin} />}
+        {login ? (
+          <Login
+            setlogin={setlogin}
+            setIsUSerLogged={setIsUSerLogged}
+            onClose={onCloseModal}
+          />
+        ) : (
+          <Signup setlogin={setlogin} setIsUSerLogged={setIsUSerLogged} />
+        )}
       </ModalContainer>
     </Modal>
   );

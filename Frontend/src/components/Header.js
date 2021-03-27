@@ -85,7 +85,7 @@ function Header() {
         </Settings>
       </Menu.Item>
       <Divider />
-      <Menu.Item key="9">
+      <Menu.Item key="9" onClick={() => setIsUSerLogged((prev) => !prev)}>
         <LogOut>
           <ExitToAppOutlinedIcon />
           &nbsp; Log Out
@@ -132,7 +132,11 @@ function Header() {
         <LoginButton onClick={onOpenModal}>Login/Register</LoginButton>
       )}
 
-      <AuthModal open={open} onCloseModal={onCloseModal} />
+      <AuthModal
+        open={open}
+        onCloseModal={onCloseModal}
+        setIsUSerLogged={setIsUSerLogged}
+      />
     </HeaderContainer>
   );
 }
