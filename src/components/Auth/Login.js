@@ -6,6 +6,7 @@ import * as yup from "yup";
 import * as actions from "../../redux/action";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
+import axios from 'axios';
 
 function Login({ setlogin, setIsUSerLogged, onClose }) {
   const validationSchema = yup.object({
@@ -27,9 +28,28 @@ function Login({ setlogin, setIsUSerLogged, onClose }) {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       // alert(JSON.stringify(values, null, 2));
+      const headers = {
+        'Content-Type': 'application/json',
+        'email': values.email,
+        'password': values.password
+      }
+      
+      axios.post("http://localhost:4000/api/v1/auth/login",null,{
+        headers: headers
+      })
+        .then((response) => {
+          localStorage.setItem("accesstoken", response.token)
+          localStorage.setItem("name", response.name)
+          setIsUSerLogged((prev) => !prev)
+          console.log(localStorage.getItem("name"))
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Invalid Credentials")
+        })
       console.log("email->", values.email);
       console.log("password->", values.password);
-      setIsUSerLogged((prev) => !prev);
+      // setIsUSerLogged((prev) => !prev);
       onClose((prev) => !prev);
       // this.props.onAuth(values.email,values.password);
     },
