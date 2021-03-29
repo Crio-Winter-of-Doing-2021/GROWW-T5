@@ -1,13 +1,14 @@
 import { createChatBotMessage } from "react-chatbot-kit";
 import React from "react";
 import BotAvatar from "./BotAvatar";
+import Faqs from "./Faqs";
+import getInitialMessages from "./components/initialMessages";
 
+const botName = "GrowwBot"
 const config = {
-  initialMessages: [createChatBotMessage(`Hello world`)],
-  botName: "GrowwBot",
-  customComponents: {
-    botAvatar: (props) => <BotAvatar {...props} />,
-  },
+  initialMessages: getInitialMessages(botName),
+  botName: botName,
+  customComponents: {botAvatar: (props) => <BotAvatar {...props} />},
   customStyles: {
     botMessageBox: {
       backgroundColor: "#00d09c",
@@ -16,6 +17,13 @@ const config = {
       backgroundColor: "#00d09c",
     },
   },
+  widgets: [
+    {
+      widgetName: "faqs",
+      widgetFunc: (props) => <Faqs {...props} />,
+      mapStateToProps: ["gist"],
+    }
+  ],
 };
 
 export default config;

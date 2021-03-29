@@ -4,6 +4,14 @@ class ActionProvider {
       this.setState = setStateFunc;
       this.createClientMessage = createClientMessage;
     }
+
+    greet() {
+
+    }
+
+    farewell() {
+
+    }
   }
   
   export default ActionProvider;

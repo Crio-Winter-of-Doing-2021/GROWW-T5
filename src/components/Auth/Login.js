@@ -22,8 +22,8 @@ function Login({ setlogin, setIsUSerLogged, onClose }) {
 
   const formik = useFormik({
     initialValues: {
-      email: "foobar@example.com",
-      password: "foobar",
+      email: "admin123@root.com",
+      password: "root12345",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -38,8 +38,8 @@ function Login({ setlogin, setIsUSerLogged, onClose }) {
         headers: headers
       })
         .then((response) => {
-          localStorage.setItem("accesstoken", response.token)
-          localStorage.setItem("name", response.name)
+          localStorage.setItem("accesstoken", response.data.token)
+          localStorage.setItem("name", response.data.name)
           setIsUSerLogged((prev) => !prev)
           console.log(localStorage.getItem("name"))
         })
@@ -47,8 +47,6 @@ function Login({ setlogin, setIsUSerLogged, onClose }) {
           console.log(error);
           alert("Invalid Credentials")
         })
-      console.log("email->", values.email);
-      console.log("password->", values.password);
       // setIsUSerLogged((prev) => !prev);
       onClose((prev) => !prev);
       // this.props.onAuth(values.email,values.password);
