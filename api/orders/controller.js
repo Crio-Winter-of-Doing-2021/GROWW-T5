@@ -28,8 +28,7 @@ exports.placeOrder = async(req, res) => {
         const newOrder = new models.Order({
             userId: req.data,
             productId: req.body.productId,
-            quantity: req.body.quantity,
-            orderType: req.body.orderType,
+            orderSpecs: req.body.orderSpecs
         });
         await newOrder.save();
         res.status(201).json({msg: "Success"});

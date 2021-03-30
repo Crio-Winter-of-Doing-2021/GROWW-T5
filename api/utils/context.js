@@ -7,9 +7,9 @@ class Context {
 
     // page ids to tags
     pageIdtoTag = {
-        exploreStocks: "Stocks",
-        exploreMF: "Mutual Funds",
-        orders: "Orders"
+        exploreStocks: "stocks",
+        exploreMF: "mutualfunds",
+        orders: "orders"
     };
 
     // get context parameters from req object
@@ -37,13 +37,13 @@ class Context {
         var tags = [];
 
         if (!context.user) {
-            tags.push("Account Creation");
+            tags.push("accountcreation");
         } else {
             if (!context.user.kycStatus) {
-                tags.push("KYC");
+                tags.push("kyc");
             }
             if (Order.find({userId: context.user.userId}).length === 0) {
-                tags.push("Start Investing");
+                tags.push("startinvesting");
             }
         }
         if (context.pageTag) {

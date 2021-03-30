@@ -1,10 +1,10 @@
 const Authentication = require('../utils/auth');
 
-const requireLogin = (req, res, next) => {
+const requireAdminLogin = (req, res, next) => {
     try {
         const auth = new Authentication();
         var data = auth.verifyAccessToken(req.headers.accesstoken);
-        if (data) {
+        if (data && data.role === "admin") {
             req.data = data.userId;
             next();
         } else {
@@ -15,4 +15,4 @@ const requireLogin = (req, res, next) => {
     }
 }
 
-module.exports = requireLogin;
+module.exports = requireAdminLogin;

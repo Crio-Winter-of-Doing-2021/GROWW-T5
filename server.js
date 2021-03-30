@@ -4,7 +4,6 @@ const dotenv = require('dotenv');
 const logger = require('./middleware/logger');
 const validation = require('./middleware/validation');
 var cors = require('cors');
-var session = require('express-session');
 
 app = express()
 
@@ -28,13 +27,6 @@ function createApp() {
 
     // INITIALIZING MIDDLEWARES
     app.use(cors());
-    app.set('trust proxy', 1); // trust first proxy
-    app.use(session({
-        secret: process.env.SECRET_KEY || "secret!",
-        resave: false,
-        saveUninitialized: true,
-        cookie: { secure: true }
-    }));
     app.use(express.json());
     app.use(express.urlencoded({extended : false}));
     app.use(logger);

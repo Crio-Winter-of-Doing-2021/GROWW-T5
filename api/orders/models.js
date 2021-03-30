@@ -10,18 +10,21 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    quantity: {
-        type: Number,
-        required: true
+    orderSpecs: {
+        quantity: Number,
+        orderType: {
+            type: String,
+            enum: ['Buy', 'Sell'],
+        },
+        investType: {
+            type: String,
+            enum: ["SIP", "OneTime"]
+        },
+        sipAmount: Number
     },
     orderTime: {
         type: Date,
         default: Date.now()
-    },
-    orderType: {
-        type: String,
-        enum: ['Buy', 'Sell'],
-        required: true
     },
     status: {
         type: String,
@@ -36,9 +39,7 @@ orderSchema.methods.getPayload = async function() {
         id: order.id,
         userId: order.userId,
         product: product,
-        quantity: order.quantity,
-        orderTime: order.orderTime,
-        orderType: order.orderType,
+        orderSpecs: order.orderSpecs,
         status: order.status
     }
     return response;

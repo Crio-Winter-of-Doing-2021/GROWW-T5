@@ -18,8 +18,9 @@ exports.getFAQ = async (req, res) => {
 async function faqBasedOnContext(req, res) {
     const contextManager = new Context();
     const context = await contextManager.generateContext(req);
-    const tags = await contextManager.mapContextToTags(context);  
-    const faqs = await models.FAQ.find().all('tags', tags)
+    const tags = await contextManager.mapContextToTags(context);
+    console.log(tags);  
+    const faqs = await models.FAQ.find({tags: {'$in': tags}, status: "Answered"})
         .limit(5);
     if (faqs.length > 0) {
         return({
@@ -37,7 +38,7 @@ async function faqBasedOnContext(req, res) {
 exports.getAllFAQ = async (req, res) => {
     try {
         if (req.query.message) {
-            const reply = await models.FAQ.findOne({question: req.query.message});
+            const reply = await models.FAQ.findOne({question: req.query.message, status: "Answered"});
             if (reply) {
                 res.json({
                     faqs: null,
@@ -46,7 +47,9 @@ exports.getAllFAQ = async (req, res) => {
                 return;
             }
             
-            const faqs = await models.FAQ.find({$text: {$search: req.query.message}});
+            const faqs = await models.FAQ.find({$text: {$search: req.query.message}, status: "Answered"})
+                .sort( { score: { $meta: "textScore" } } )
+                .limit(5);
             if (faqs.length > 0) {
                 res.json({
                     faqs: faqs,

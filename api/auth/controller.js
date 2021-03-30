@@ -3,10 +3,10 @@ const Authentication = require('../utils/auth')
 
 exports.regsiterUser = async(req, res) => {
     try {
-        var { name, email, password } = req.headers;
+        var { email, password } = req.headers;
         var user = await User.findOne({ email: email});
         if(!user){
-            user = new User({name, email, password});
+            user = new User(req.headers);
             user.setPasswordAndSave(password);
             res.json({msg: "Success"});
         } else {
@@ -28,8 +28,12 @@ exports.loginUser = async(req,res) => {
         } else {
             if (await user.verifyPassword(password)) {
                 const auth = new Authentication();
-                const token = auth.createAccessToken(user.id);
-                res.status(200).json({token: token});
+                const data = {
+                    userId: user.id,
+                    role: user.role
+                }
+                const token = auth.createAccessToken(data);
+                res.status(200).json({token: token, name: user.name});
             } else {
                 res.status(401).json({msg: "Unauthorized"});
             }

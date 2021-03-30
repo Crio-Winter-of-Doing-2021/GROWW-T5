@@ -1,6 +1,6 @@
-const { Joi } = require('express-validation');
+const { Joi, validate } = require('express-validation');
 
-exports.placeOrderPostIn = {
+const placeOrderPostIn = {
     headers: Joi.object({
         accesstoken: Joi.string()
             .required()
@@ -8,16 +8,21 @@ exports.placeOrderPostIn = {
     body: Joi.object({
         productId: Joi.string()
             .required(),
-        quantity: Joi.number()
-            .integer()
-            .required(),
-        orderType: Joi.string()
-            .valid('Buy','Sell')
-            .required()
+        orderSpecs: Joi.object({
+            quantity: Joi.number()
+                .integer(),
+            orderType: Joi.string()
+                .valid('Buy','Sell'),
+            investType: Joi.string()
+                .valid("SIP", "OneTime"),
+            sipAmount: Joi.number()
+                .integer()
+        })
     })
 }
+exports.palceOrderPostInValidator = validate(placeOrderPostIn, {}, {allowUnknown: true})
 
-exports.updateOrderStatusPutIn = {
+const updateOrderStatusPutIn = {
     params: Joi.object({
         id: Joi.string()
             .required(),
@@ -28,3 +33,4 @@ exports.updateOrderStatusPutIn = {
             .required()
     })
 }
+exports.updateOrderStatusValidator = validate(updateOrderStatusPutIn, {}, {allowUnknown: true})
