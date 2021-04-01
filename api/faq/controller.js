@@ -19,7 +19,7 @@ async function faqBasedOnContext(req, res) {
     const contextManager = new Context();
     const context = await contextManager.generateContext(req);
     const tags = await contextManager.mapContextToTags(context);
-    console.log(tags);  
+    console.log(tags)
     const faqs = await models.FAQ.find({tags: {'$in': tags}, status: "Answered"})
         .limit(5);
     if (faqs.length > 0) {
