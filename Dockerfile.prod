@@ -1,0 +1,21 @@
+# base node image
+FROM node:14.15.5-alpine
+
+# specifying user
+RUN addgroup -S appgroup && adduser -S yogesh -G appgroup
+USER yogesh
+
+WORKDIR /home/yogesh/app
+
+# installing packages
+COPY package*.json ./
+RUN npm install
+
+# adding code 
+COPY . .
+
+# exposing port
+EXPOSE 4000
+
+# starting server
+CMD ["npm", "start"]

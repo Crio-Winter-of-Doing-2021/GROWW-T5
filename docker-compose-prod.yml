@@ -2,12 +2,13 @@ version: '3'
 
 services:
   server:
-    build: .
-    image: growwserver:v1
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    image: growwserver:d1
     ports: 
       - 4000:4000
     restart: on-failure
-    command: npm start
     environment:
       - DBURI='mongodb://root:example@mongo:27017/ExternDB?authSource=admin&w=1'
       - HOST=0.0.0.0
