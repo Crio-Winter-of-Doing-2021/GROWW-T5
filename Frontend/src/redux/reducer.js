@@ -20,22 +20,32 @@
 import IS_LOGIN from "./type";
 import * as actionTypes from "./action";
 
-const initailState = {
-  login: false,
-  auth_mdoal: false,
+import { AUTH_START, AUTH_SUCCESS, AUTH_FAIL } from "./type";
+
+const initialState = {
+  loading: false,
+  users: [],
+  error: "",
 };
 
-const reducer = (state = initailState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.IS_LOGIN:
+    case AUTH_START:
       return {
         ...state,
-        login: action.login,
+        loading: true,
       };
-    case actionTypes.AUTH_MODAL:
+    case AUTH_SUCCESS:
       return {
-        ...state,
-        auth_mdoal: action.auth_mdoal,
+        loading: false,
+        users: action.payload,
+        error: "",
+      };
+    case AUTH_FAIL:
+      return {
+        loading: false,
+        users: [],
+        error: action.payload,
       };
     default:
       return state;
@@ -43,3 +53,27 @@ const reducer = (state = initailState, action) => {
 };
 
 export default reducer;
+
+// const initailState = {
+//   login: false,
+//   auth_mdoal: false,
+// };
+
+// const reducer = (state = initailState, action) => {
+//   switch (action.type) {
+//     case actionTypes.IS_LOGIN:
+//       return {
+//         ...state,
+//         login: action.login,
+//       };
+//     case actionTypes.AUTH_MODAL:
+//       return {
+//         ...state,
+//         auth_mdoal: action.auth_mdoal,
+//       };
+//     default:
+//       return state;
+//   }
+// };
+
+// export default reducer;

@@ -6,7 +6,10 @@ import Footer from "./components/Footer";
 import styled from "styled-components";
 import Stocks from "./components/Stocks";
 import Funds from "./components/Funds";
-import Description from "./components/Description";
+import StockDescription from "./components/StockDescription";
+import FundDescription from "./components/FundDescription";
+import Order from "./components/Order/Order";
+import Admin from "./components/Admin";
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,48 +22,55 @@ import { useState } from "react";
 
 function App() {
   const [showBot, toggleBot] = useState(false);
+
+  window.onbeforeunload = function (e) {
+    localStorage.clear();
+  };
+
   return (
     <div className="App">
       {showBot && <Chatbots />}
       <Button onClick={() => toggleBot((prev) => !prev)}>Bot</Button>
+      <Header />
       <Router>
-        <Switch>
-          <Route path="/gold">
-            <Header />
-            <RoutesHeader category="gold" />
-          </Route>
-          <Route path="/us-stocks">
-            <Header />
-            <RoutesHeader category="us-stocks" />
-          </Route>
-          <Route path="/fixed-deposits">
-            <Header />
-            <RoutesHeader category="fixed-deposits" />
-          </Route>
-          <Route path="/mutual-funds">
-            <Header />
-            <RoutesHeader category="mutual-funds" />
-            <Funds />
-            <Footer />
-          </Route>
-          <Route path="/stocks">
-            <Header />
-            <RoutesHeader category="stocks" />
-            <Stocks />
-            <Footer />
-          </Route>
-          <Route path="/description">
-            <Header />
-            <Description />
-          </Route>
-          <Route
-            exact
-            path="/"
-            render={() => {
-              return <Redirect to="/stocks" />;
-            }}
-          />
-        </Switch>
+        {/* <Switch> */}
+        <Route path="/gold">
+          <RoutesHeader category="gold" />
+        </Route>
+        <Route path="/us-stocks">
+          <RoutesHeader category="us-stocks" />
+        </Route>
+        <Route path="/fixed-deposits">
+          <RoutesHeader category="fixed-deposits" />
+        </Route>
+        <Route path="/mutual-funds">
+          <RoutesHeader category="mutual-funds" />
+          <Funds />
+        </Route>
+        <Route path="/stocks">
+          <RoutesHeader category="stocks" />
+          <Stocks />
+        </Route>
+        <Route path="/stock/:stockname" component={StockDescription}></Route>
+        <Route
+          path="/mutual-fund/:fundname"
+          component={FundDescription}
+        ></Route>
+
+        <Route path="/order/:category" component={Order}>
+          {/* <Order /> */}
+        </Route>
+        <Route path="/admin" component={Admin}></Route>
+
+        <Route
+          exact
+          path="/"
+          render={() => {
+            return <Redirect to="/stocks" />;
+          }}
+        />
+        {/* </Switch> */}
+        <Footer />
       </Router>
     </div>
   );

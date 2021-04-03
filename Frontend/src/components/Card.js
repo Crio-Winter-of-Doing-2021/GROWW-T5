@@ -3,22 +3,27 @@ import styled from "styled-components";
 import { Link, useRouteMatch, Route, Switch } from "react-router-dom";
 import Footer from "./Footer";
 
-function Card({ id, img, cardname, cardprice, cardrate }) {
+function Card({ category, id, img, cardname, cardprice, cardrate }) {
   let { path, url } = useRouteMatch();
   console.log(url);
 
   return (
     <Container>
-      <Link to={`${url}/${id}`}>
-        <img src={img}></img>
-        <CardName>{cardname}</CardName>
-        <CardPrice>{cardprice}</CardPrice>
-        <CardRate>{cardrate}</CardRate>
-      </Link>
-
-      {/* <Route path="/stocks/adani-green-energy">
-        <Footer />
-      </Route> */}
+      {category == "stock" ? (
+        <Link to={`/stock/${id}`}>
+          <img src={img}></img>
+          <CardName>{cardname}</CardName>
+          <CardPrice>{cardprice}</CardPrice>
+          <CardRate>{cardrate}</CardRate>
+        </Link>
+      ) : (
+        <Link to={`/mutual-fund/${id}`}>
+          <img src={img}></img>
+          <CardName>{cardname}</CardName>
+          <CardPrice>{cardprice}</CardPrice>
+          <CardRate>{cardrate}</CardRate>
+        </Link>
+      )}
     </Container>
   );
 }

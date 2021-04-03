@@ -33,7 +33,11 @@ function AuthModal({ open, onCloseModal, setIsUSerLogged }) {
             onClose={onCloseModal}
           />
         ) : (
-          <Signup setlogin={setlogin} setIsUSerLogged={setIsUSerLogged} />
+          <Signup
+            setlogin={setlogin}
+            setIsUSerLogged={setIsUSerLogged}
+            onClose={onCloseModal}
+          />
         )}
       </ModalContainer>
     </Modal>

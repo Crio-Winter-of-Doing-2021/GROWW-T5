@@ -21,41 +21,80 @@ export const authStart = () => {
 export const authSuccess = (authData) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
-    authData: authData,
+    payload: authData,
   };
 };
 
 export const authFail = (error) => {
   return {
     type: actionTypes.AUTH_FAIL,
-    error: error,
+    payload: error,
   };
 };
 
-export const auth = (email, password) => {
+export const authLogin = (email, password) => {
   return (dispatch) => {
     dispatch(authStart());
     const authData = {
       email: email,
       password: password,
     };
-    axios
-      .post("url", authData)
-      .then((response) => {
-        console.log(response);
-        dispatch(authSuccess());
-        // setName("");
-        // setURL("");
-        // setCaption("");
 
-        // setMessage("SUCCESSFULLY POSTED");
-        // setTimeout(() => {
-        //   setMessage("");
-        // }, 2000);
-      })
-      .catch((error) => {
-        console.log("Error", error.message);
-        dispatch(authFail());
-      });
+    if (email && password) {
+      dispatch(
+        authSuccess({
+          email: email,
+          password: password,
+        })
+      );
+      console.log("success login");
+    } else {
+      dispatch(authFail());
+      console.log("login failed");
+    }
+    // axios
+    //   .post("url", authData)
+    //   .then((response) => {
+    //     console.log(response);
+    //     dispatch(authSuccess(response.data));
+    //   })
+    //   .catch((error) => {
+    //     console.log("Error", error.message);
+    //     dispatch(authFail());
+    //   });
+  };
+};
+
+export const authSignUp = (name, email, password) => {
+  return (dispatch) => {
+    dispatch(authStart());
+    const authData = {
+      email: email,
+      password: password,
+    };
+
+    if (email && password) {
+      dispatch(
+        authSuccess({
+          name: name,
+          email: email,
+          password: password,
+        })
+      );
+      console.log("success Signup");
+    } else {
+      dispatch(authFail());
+      console.log("Signup failed");
+    }
+    // axios
+    //   .post("url", authData)
+    //   .then((response) => {
+    //     console.log(response);
+    //     dispatch(authSuccess(response.data));
+    //   })
+    //   .catch((error) => {
+    //     console.log("Error", error.message);
+    //     dispatch(authFail());
+    //   });
   };
 };

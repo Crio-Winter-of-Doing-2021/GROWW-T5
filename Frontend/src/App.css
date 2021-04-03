@@ -64,7 +64,7 @@
   z-index: 9999;
   box-shadow: 5px 5px 13px rgb(91 81 81 / 40%);
   border-radius: 5px;
-  width: auto !important;
+  width: 280px !important;
 }
 
 .MuiInput-underline:after {
@@ -100,4 +100,8 @@
   font-size: 16px !important;
   font-weight: 600 !important;
   margin-top: 8px !important;
+}
+
+.chipsm {
+  width: 80% !important;
 }
