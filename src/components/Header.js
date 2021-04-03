@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { Menu, Dropdown } from "antd";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 import SearchIcon from "@material-ui/icons/Search";
 import Avatar from "@material-ui/core/Avatar";
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
@@ -19,7 +20,7 @@ import AuthModal from "./Auth/AuthModal";
 import "react-responsive-modal/styles.css";
 import "antd/dist/antd.css";
 
-function Header() {
+function Header({ userData }) {
   const [isUserLogged, setIsUSerLogged] = useState(false);
 
   const [open, setOpen] = useState(false);
@@ -35,8 +36,8 @@ function Header() {
           src="https://lh6.googleusercontent.com/-KDVPU093UXA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuckkBhm-U1PiqlA0y7o_zyNt4xMQLQ/s96-c/photo.jpg"
         />
         <NameAndEmail>
-          <Name>Priyansh Jain</Name>
-          <Email>xyaz@gmail.com</Email>
+          <Name>{userData.name}</Name>
+          <Email>{userData.email}</Email>
         </NameAndEmail>
       </UserInformation>
       <Menu.Item key="2">
@@ -60,10 +61,12 @@ function Header() {
       </Menu.Item>
       <Divider />
       <Menu.Item key="5">
+        {/* <Link to="/order/stocks"> */}
         <Orders>
           <DescriptionOutlinedIcon />
           &nbsp; Orders
         </Orders>
+        {/* </Link> */}
       </Menu.Item>
       <Menu.Item key="6">
         <SIP>
@@ -141,7 +144,14 @@ function Header() {
   );
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    userData: state.users,
+  };
+};
+
+export default connect(mapStateToProps, null)(Header);
+// export default Header;
 
 const HeaderContainer = styled.div`
   height: 80px;

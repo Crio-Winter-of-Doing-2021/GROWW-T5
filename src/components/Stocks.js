@@ -2,10 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import Card from "./Card";
 import { Link, useRouteMatch, Route } from "react-router-dom";
-import Description from "./Description";
+import Description from "./StockDescription";
 function Stocks() {
   const stocksArray = [
     {
+      category: "stock",
       id: "adani-green-energy",
       img:
         "https://assets-netstorage.groww.in/stock-assets/logos/INE364U01010.png",
@@ -14,6 +15,7 @@ function Stocks() {
       cardrate: "64.55 (5.00%)",
     },
     {
+      category: "stock",
       id: "icici-bank",
       img:
         "https://assets-netstorage.groww.in/stock-assets/logos/INE090A01021.png",
@@ -22,6 +24,7 @@ function Stocks() {
       cardrate: "4.05 (0.71%)",
     },
     {
+      category: "stock",
       id: "alkem-laboratories",
       img:
         "https://assets-netstorage.groww.in/stock-assets/logos/INE540L01014.png",
@@ -30,6 +33,7 @@ function Stocks() {
       cardrate: "65.55 (2.55%)",
     },
     {
+      category: "stock",
       id: "dr-reddys-lab",
       img:
         "https://assets-netstorage.groww.in/stock-assets/logos/INE089A01023.png",
@@ -44,21 +48,20 @@ function Stocks() {
 
   return (
     <Container>
-      {stocksArray.map(({ id, img, cardname, cardprice, cardrate }) => (
-        // <Link to={`${url}/${cardname}`}>
-        <Card
-          id={id}
-          img={img}
-          cardname={cardname}
-          cardprice={cardprice}
-          cardrate={cardrate}
-        />
-        // </Link>
-      ))}
-
-      <Route path={`/${url}/adani-green-energy`}>
-        <Description />
-      </Route>
+      {stocksArray.map(
+        ({ category, id, img, cardname, cardprice, cardrate }) => (
+          // <Link to={`${url}/${cardname}`}>
+          <Card
+            category={category}
+            id={id}
+            img={img}
+            cardname={cardname}
+            cardprice={cardprice}
+            cardrate={cardrate}
+          />
+          // </Link>
+        )
+      )}
     </Container>
   );
 }

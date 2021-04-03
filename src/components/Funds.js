@@ -5,6 +5,7 @@ import Card from "./Card";
 function Funds() {
   const fundsArray = [
     {
+      category: "funds",
       id: "icici-prudential-technology-direct-plan-growth",
       img: "https://groww.in/images/partners/icici_groww.svg",
       cardname: "ICICI Prudential Technology Direct Plan Growth",
@@ -12,6 +13,7 @@ function Funds() {
       cardrate: "(3Y)",
     },
     {
+      category: "funds",
       id: "axis-bluechip-fund-direct-plan-growth",
       img: "https://groww.in/images/partners/axis_groww.svg",
       cardname: "Axis Bluechip Fund Direct Plan Growth",
@@ -19,6 +21,7 @@ function Funds() {
       cardrate: "(3Y)",
     },
     {
+      category: "funds",
       id: "tata-digital-india-fund-direct-growth",
       img: "https://groww.in/images/partners/tata_groww.svg",
       cardname: "Tata Digital India Fund Direct Growth",
@@ -26,6 +29,7 @@ function Funds() {
       cardrate: "(3Y)",
     },
     {
+      category: "funds",
       id: "uti-nifty-index-fund-direct-growth",
       img: "https://groww.in/images/partners/uti_groww.svg",
       cardname: "UTI Nifty Index Fund Direct Growth",

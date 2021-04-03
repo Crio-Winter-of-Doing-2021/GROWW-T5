@@ -4,11 +4,10 @@ import TextField from "@material-ui/core/TextField";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import * as actions from "../../redux/action";
-import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
-import axios from 'axios';
+import Button from "@material-ui/core/Button";
 
-function Login({ setlogin, setIsUSerLogged, onClose }) {
+function Login({ setlogin, setIsUSerLogged, onClose, onAuth }) {
   const validationSchema = yup.object({
     email: yup
       .string("Enter your email")
@@ -22,34 +21,18 @@ function Login({ setlogin, setIsUSerLogged, onClose }) {
 
   const formik = useFormik({
     initialValues: {
-      email: "admin123@root.com",
-      password: "root12345",
+      email: "foobar@example.com",
+      password: "foobar",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       // alert(JSON.stringify(values, null, 2));
-      const headers = {
-        'Content-Type': 'application/json',
-        'email': values.email,
-        'password': values.password
-      }
-      
-      axios.post("http://localhost:4000/api/v1/auth/login",null,{
-        headers: headers
-      })
-        .then((response) => {
-          localStorage.setItem("accesstoken", response.data.token)
-          localStorage.setItem("name", response.data.name)
-          setIsUSerLogged((prev) => !prev)
-          console.log(localStorage.getItem("name"))
-        })
-        .catch((error) => {
-          console.log(error);
-          alert("Invalid Credentials")
-        })
-      // setIsUSerLogged((prev) => !prev);
+      console.log("email->", values.email);
+      console.log("password->", values.password);
+      onAuth(values.email, values.password);
+      console.log("going");
+      setIsUSerLogged((prev) => !prev);
       onClose((prev) => !prev);
-      // this.props.onAuth(values.email,values.password);
     },
   });
 
@@ -98,12 +81,12 @@ function Login({ setlogin, setIsUSerLogged, onClose }) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (email, password) => dispatch(actions.auth(email, password)),
+    onAuth: (email, password) => dispatch(actions.authLogin(email, password)),
   };
 };
 
-export default Login;
-// export default connect(null,mapDispatchToProps)(Login);
+// export default Login;
+export default connect(null, mapDispatchToProps)(Login);
 
 const LoginContainer = styled.div`
   width: 450px;

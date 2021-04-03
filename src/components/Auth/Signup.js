@@ -3,10 +3,11 @@ import styled, { keyframes } from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import { useFormik } from "formik";
 import * as yup from "yup";
-
+import * as actions from "../../redux/action";
+import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 
-function Signup({ setlogin }) {
+function Signup({ setlogin, setIsUSerLogged, onClose, onAuth }) {
   const validationSchema = yup.object({
     name: yup.string("Enter your name").required("Name is required"),
     email: yup
@@ -27,7 +28,10 @@ function Signup({ setlogin }) {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      onAuth(values.name, values.email, values.password);
+      setIsUSerLogged((prev) => !prev);
+      onClose((prev) => !prev);
+      // alert(JSON.stringify(values, null, 2));
     },
   });
   return (
@@ -79,8 +83,16 @@ function Signup({ setlogin }) {
     </SignupContainer>
   );
 }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAuth: (name, email, password) =>
+      dispatch(actions.authSignUp(name, email, password)),
+  };
+};
 
-export default Signup;
+export default connect(null, mapDispatchToProps)(Signup);
+
+// export default Signup;
 
 const SignupContainer = styled.div`
   width: 450px;

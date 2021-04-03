@@ -1,14 +1,24 @@
 import { createChatBotMessage } from "react-chatbot-kit";
 import React from "react";
 import BotAvatar from "./BotAvatar";
-import Faqs from "./Faqs";
-import getInitialMessages from "./components/initialMessages";
+import Overview from "./Widgets/Overview";
 
-const botName = "GrowwBot"
 const config = {
-  initialMessages: getInitialMessages(botName),
-  botName: botName,
-  customComponents: {botAvatar: (props) => <BotAvatar {...props} />},
+  initialMessages: [
+    createChatBotMessage(`Hello world`),
+    createChatBotMessage(
+      "Here's a quick overview over what I need to function. ask me about the different parts to dive deeper.",
+      {
+        withAvatar: false,
+        delay: 500,
+        widget: "overview",
+      }
+    ),
+  ],
+  botName: "GrowwBot",
+  customComponents: {
+    botAvatar: (props) => <BotAvatar {...props} />,
+  },
   customStyles: {
     botMessageBox: {
       backgroundColor: "#00d09c",
@@ -19,10 +29,20 @@ const config = {
   },
   widgets: [
     {
-      widgetName: "faqs",
-      widgetFunc: (props) => <Faqs {...props} />,
+      widgetName: "overview",
+      widgetFunc: (props) => <Overview {...props} />,
       mapStateToProps: ["gist"],
-    }
+    },
+    // {
+    //   widgetName: "messageParser",
+    //   widgetFunc: (props) => <MessageParser {...props} />,
+    //   mapStateToProps: ["gist"],
+    // },
+    // {
+    //   widgetName: "actionProviderDocs",
+    //   widgetFunc: (props) => <ActionProviderDocs {...props} />,
+    //   mapStateToProps: ["gist"],
+    // },
   ],
 };
 
