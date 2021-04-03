@@ -7,28 +7,33 @@ class MessageParser {
   parse(message) {
     const lowerCase = message.toLowerCase();
 
-    if (
-      lowerCase.includes("messageparser") ||
-      lowerCase.includes("parse") ||
-      lowerCase.includes("parser") ||
-      lowerCase.includes("message parser")
-    ) {
-      return this.actionProvider.handleMessageParserDocs();
+    if (lowerCase.includes("hi") || lowerCase.includes("hey"), lowerCase.includes('hello')) {
+      return this.actionProvider.greet()
     }
 
-    if (lowerCase.includes("action") || lowerCase.includes("actionprovider")) {
-      return this.actionProvider.handleActionProviderDocs();
-    }
+    return this.actionProvider.handleMessage(message);
+    // if (
+    //   lowerCase.includes("messageparser") ||
+    //   lowerCase.includes("parse") ||
+    //   lowerCase.includes("parser") ||
+    //   lowerCase.includes("message parser")
+    // ) {
+    //   return this.actionProvider.handleMessageParserDocs();
+    // }
 
-    if (lowerCase.includes("config")) {
-      return this.actionProvider.handleConfigDocs();
-    }
+    // if (lowerCase.includes("action") || lowerCase.includes("actionprovider")) {
+    //   return this.actionProvider.handleActionProviderDocs();
+    // }
 
-    if (lowerCase.includes("widget")) {
-      return this.actionProvider.handleWidgetDocs();
-    }
+    // if (lowerCase.includes("config")) {
+    //   return this.actionProvider.handleConfigDocs();
+    // }
 
-    return this.actionProvider.handleDefault();
+    // if (lowerCase.includes("widget")) {
+    //   return this.actionProvider.handleWidgetDocs();
+    // }
+
+    // return this.actionProvider.handleDefault();
   }
 }
 

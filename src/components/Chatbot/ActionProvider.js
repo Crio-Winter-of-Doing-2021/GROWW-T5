@@ -1,8 +1,38 @@
+const axios = require('axios')
+
 class ActionProvider {
   constructor(createChatBotMessage, setStateFunc, createClientMessage) {
     this.createChatBotMessage = createChatBotMessage;
     this.setState = setStateFunc;
     this.createClientMessage = createClientMessage;
+  }
+
+  handleFaqTap = (faqId) => {
+    axios.get(`http://localhost:4000/api/v1/faq/${faqId}`)
+    .then(res => {
+        const message = this.createChatBotMessage(res.data.answer)
+        this.addMessageToBotState(message)
+    })
+  }
+
+  greet = () => {
+    const message = this.createChatBotMessage("Hello")
+    this.addMessageToBotState(message)
+  }
+
+  handleMessage = (message) => {
+    let config = {
+      headers: {'accesstoken': localStorage.getItem('accesstoken')},
+      params: {
+        message: message
+      },
+    }
+    axios.get(`http://localhost:4000/api/v1/faq`, config)
+    .then(res => {
+        console.log(res.data)
+        // const message = this.createChatBotMessage(res.data.answer)
+        // this.addMessageToBotState(message)
+    })
   }
 
   handleMessageParserDocs = () => {

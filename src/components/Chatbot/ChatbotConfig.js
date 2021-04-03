@@ -2,12 +2,13 @@ import { createChatBotMessage } from "react-chatbot-kit";
 import React from "react";
 import BotAvatar from "./BotAvatar";
 import Overview from "./Widgets/Overview";
+import Faqs from "./Widgets/Faq";
 
 const config = {
   initialMessages: [
     createChatBotMessage(`Hello world`),
     createChatBotMessage(
-      "Here's a quick overview over what I need to function. ask me about the different parts to dive deeper.",
+      "Maybe these will help you.",
       {
         withAvatar: false,
         delay: 500,
@@ -30,7 +31,7 @@ const config = {
   widgets: [
     {
       widgetName: "overview",
-      widgetFunc: (props) => <Overview {...props} />,
+      widgetFunc: (props) => <Faqs {...props} />,
       mapStateToProps: ["gist"],
     },
     // {
