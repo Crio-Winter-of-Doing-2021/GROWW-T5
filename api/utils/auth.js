@@ -19,7 +19,6 @@ class Authentication {
             var data = jwt.verify(token, this.secertKey);
             return data.sub;
         } catch(e) {
-            console.log(e);
             return null;
         }
         

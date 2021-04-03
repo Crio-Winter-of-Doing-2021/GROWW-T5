@@ -7,18 +7,9 @@ class Context {
 
     // page ids to tags
     pageIdtoTag = {
-        exploreStocks: "stocks",
-        exploreMF: "mutualfunds",
-        orders: "orders",
-        stock: () => {
-            return null;
-        },
-        order: () => {
-            return null;
-        },
-        mutualfund: () => {
-            return null;
-        }
+        stocks: "stocks",
+        "mutual-funds": "mutualfunds",
+        orders: "orders"
     };
 
     // get context parameters from req object
@@ -31,17 +22,20 @@ class Context {
         if (req.headers.accesstoken) {
             const auth = new Authentication();
             const userId = auth.verifyAccessToken(req.headers.accesstoken);
-            user = await User.findById(userId);
-            context.user = user;
+
+            if(userId) {
+                user = await User.findById(userId);
+                context.user = user;
+            }
         }
 
         if (req.query.pageId) {
             context.pageTag = this.pageIdtoTag[req.query.pageId];
         }
 
-        if (req.query.pageId == 'stock') {
-            return null;
-        }
+        // if (req.query.pageId == 'stock') {
+        //     return null;
+        // }
         
         return context;
     }
