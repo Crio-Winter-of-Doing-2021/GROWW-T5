@@ -7,9 +7,9 @@ class Context {
 
     // page ids to tags
     pageIdtoTag = {
-        stocks: "stocks",
-        "mutual-funds": "mutualfunds",
-        orders: "orders"
+        "stocks": ["stocks"],
+        "mutual-funds": ["mutualfund"],
+        "order": ["orders"],
     };
 
     // get context parameters from req object
@@ -32,17 +32,13 @@ class Context {
         if (req.query.pageId) {
             context.pageTag = this.pageIdtoTag[req.query.pageId];
         }
-
-        // if (req.query.pageId == 'stock') {
-        //     return null;
-        // }
         
         return context;
     }
 
     // mapping context to tags
     async mapContextToTags(context) {
-        
+        console.log(context)
         var tags = [];
 
         if (!context.user) {
@@ -52,15 +48,11 @@ class Context {
                 tags.push("kyc");
             }
             if (Order.find({userId: context.user.userId}).length === 0) {
-                tags.push("startinvesting");
+                tags.push("orders");
             }
         }
-        console.log(typeof context.pageTag)
-        if (typeof context.pageTag === "string") {
-            tags.push(context.pageTag)
-        } else {
-            tags.push(context.pageTag())
-        }
+
+        tags = [...tags, ...context.pageTag]
         
         return tags;
     }
