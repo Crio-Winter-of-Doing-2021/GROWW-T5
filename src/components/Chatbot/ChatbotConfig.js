@@ -16,6 +16,9 @@ const config = {
       }
     ),
   ],
+  state: {
+    faqs: null
+  },
   botName: "GrowwBot",
   customComponents: {
     botAvatar: (props) => <BotAvatar {...props} />,
@@ -32,7 +35,7 @@ const config = {
     {
       widgetName: "overview",
       widgetFunc: (props) => <Faqs {...props} />,
-      mapStateToProps: ["gist"],
+      mapStateToProps: ["faqs"],
     },
     // {
     //   widgetName: "messageParser",

@@ -107,7 +107,7 @@ function Header({ userData }) {
       </HeaderLogo>
 
       <HeaderLinks>
-        <Explore>Explore</Explore>
+        <a href="/stocks"><Explore>Explore</Explore></a>
         <Investment>Investments</Investment>
       </HeaderLinks>
 
@@ -120,7 +120,7 @@ function Header({ userData }) {
         <HeaderIcons>
           <NotificationsNoneOutlinedIcon />
           <AccountBalanceWalletOutlinedIcon />
-          <ShoppingCartOutlinedIcon />
+          <a href="/order/stocks"><ShoppingCartOutlinedIcon /></a>
           <AvatarDropdown>
             <Dropdown overlay={menu} trigger={["click"]} placement="bottomLeft">
               <Avatar
@@ -178,6 +178,7 @@ const HeaderLinks = styled.div`
   font-size: 18px;
   width: 22%;
   justify-content: space-evenly;
+  a{color: black}
 `;
 
 const Explore = styled.div``;
@@ -209,6 +210,7 @@ const HeaderIcons = styled.div`
   width: 23%;
   justify-content: space-evenly;
   margin-left: 2%;
+  a{color: black}
 `;
 
 const AvatarDropdown = styled.div`

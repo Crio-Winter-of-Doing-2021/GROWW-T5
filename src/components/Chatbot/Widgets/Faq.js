@@ -4,21 +4,24 @@ const axios = require('axios')
 
 
 const Faqs = (props) => {
-    
+    console.log(props)
     const [faqs, setfaqs] = useState([]);
 
     let pageId = window.location.href.split("/")[3];
 
-
     useEffect(() => {
-        let config = {
-            headers: {'accesstoken': localStorage.getItem('accesstoken')},
-            params: {
-                pageId: pageId
-            },
-        }
-        axios.get('http://localhost:4000/api/v1/faq', config)
-        .then(res => setfaqs(res.data.faqs))
+        if (props.faqs) {
+           setfaqs(props.faqs)
+        } else {
+            let config = {
+                headers: {'accesstoken': localStorage.getItem('accesstoken')},
+                params: {
+                    pageId: pageId
+                },
+            }
+            axios.get('http://localhost:4000/api/v1/faq', config)
+            .then(res => setfaqs(res.data.faqs))
+        } 
     }, [])
 
     return (

@@ -30,8 +30,17 @@ class ActionProvider {
     axios.get(`http://localhost:4000/api/v1/faq`, config)
     .then(res => {
         console.log(res.data)
-        // const message = this.createChatBotMessage(res.data.answer)
-        // this.addMessageToBotState(message)
+        if (res.data.reply) {
+          const message = this.createChatBotMessage(res.data.reply.answer)
+          this.addMessageToBotState(message)
+        } else {
+          this.setState((state) => ({
+            ...state,
+            faqs: res.data.faqs
+          }))
+          const message = this.createChatBotMessage("Maybe these will help", {widget: "overview"})
+          this.addMessageToBotState(message)
+        }
     })
   }
 
