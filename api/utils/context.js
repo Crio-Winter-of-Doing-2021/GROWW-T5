@@ -1,6 +1,7 @@
 const Authentication = require('./auth');
 const { User } = require('../auth/models');
 const { Order } = require('../orders/models');
+const models = require('../products/models');
 
 class Context {
     constructor(){};
@@ -9,7 +10,7 @@ class Context {
     pageIdtoTag = {
         "stocks": ["stocks"],
         "mutual-funds": ["mutualfund"],
-        "order": ["orders"],
+        "orders": ["orders"],
     };
 
     // get context parameters from req object
@@ -21,12 +22,23 @@ class Context {
         var user = null;
         if (req.headers.accesstoken) {
             const auth = new Authentication();
-            const userId = auth.verifyAccessToken(req.headers.accesstoken);
+            const data = auth.verifyAccessToken(req.headers.accesstoken);
 
-            if(userId) {
-                user = await User.findById(userId);
+            if (data) {
+                user = await User.findById(data.userId);
                 context.user = user;
             }
+        }
+        
+        if (req.query.pageId == "stock" || req.query.pageId == 'mutual-fund') {
+            let product = await models.Product.findById(req.query.productId)
+            context.product = await product.getPayload()
+            return context
+        }
+
+        if (req.query.pageId == 'order') {
+            context.order = await Order.findById(req.query.orderId).getPayload()
+            return context
         }
 
         if (req.query.pageId) {
@@ -38,7 +50,6 @@ class Context {
 
     // mapping context to tags
     async mapContextToTags(context) {
-        console.log(context)
         var tags = [];
 
         if (!context.user) {
@@ -52,7 +63,24 @@ class Context {
             }
         }
 
-        tags = [...tags, ...context.pageTag]
+        if (context.product) {
+            tags.push(context.product.name)
+        }
+
+        if (context.order) {
+            tags.push(context.order.product.name)
+            if (context.order.status === "OnGoing") {
+                tags.push("ongoingorder")
+            }
+
+            if (context.order.status === "Failed") {
+                tags.push("failedorder")
+            }
+        }
+
+        if (context.pageTag) {
+            tags = [...tags, ...context.pageTag]
+        }
         
         return tags;
     }
