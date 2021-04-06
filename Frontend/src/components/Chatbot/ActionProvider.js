@@ -1,9 +1,48 @@
+const axios = require("axios");
+
 class ActionProvider {
   constructor(createChatBotMessage, setStateFunc, createClientMessage) {
     this.createChatBotMessage = createChatBotMessage;
     this.setState = setStateFunc;
     this.createClientMessage = createClientMessage;
   }
+
+  handleFaqTap = (faqId) => {
+    axios.get(`http://localhost:4000/api/v1/faq/${faqId}`).then((res) => {
+      const message = this.createChatBotMessage(res.data.answer);
+      this.addMessageToBotState(message);
+    });
+  };
+
+  greet = () => {
+    const message = this.createChatBotMessage("Hello");
+    this.addMessageToBotState(message);
+  };
+
+  handleMessage = (message) => {
+    let config = {
+      headers: { accesstoken: localStorage.getItem("accesstoken") },
+      params: {
+        message: message,
+      },
+    };
+    axios.get(`http://localhost:4000/api/v1/faq`, config).then((res) => {
+      console.log(res.data);
+      if (res.data.reply) {
+        const message = this.createChatBotMessage(res.data.reply.answer);
+        this.addMessageToBotState(message);
+      } else {
+        this.setState((state) => ({
+          ...state,
+          faqs: res.data.faqs,
+        }));
+        const message = this.createChatBotMessage("Maybe these will help", {
+          widget: "overview",
+        });
+        this.addMessageToBotState(message);
+      }
+    });
+  };
 
   handleMessageParserDocs = () => {
     const messages = this.createChatBotMessage(

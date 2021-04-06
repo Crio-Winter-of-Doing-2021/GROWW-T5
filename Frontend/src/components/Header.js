@@ -61,12 +61,12 @@ function Header({ userData }) {
       </Menu.Item>
       <Divider />
       <Menu.Item key="5">
-        {/* <Link to="/order/stocks"> */}
-        <Orders>
-          <DescriptionOutlinedIcon />
-          &nbsp; Orders
-        </Orders>
-        {/* </Link> */}
+        <Link to="/orders/stocks">
+          <Orders>
+            <DescriptionOutlinedIcon />
+            &nbsp; Orders
+          </Orders>
+        </Link>
       </Menu.Item>
       <Menu.Item key="6">
         <SIP>
@@ -107,7 +107,9 @@ function Header({ userData }) {
       </HeaderLogo>
 
       <HeaderLinks>
-        <Explore>Explore</Explore>
+        <Link to="/stocks">
+          <Explore>Explore</Explore>
+        </Link>
         <Investment>Investments</Investment>
       </HeaderLinks>
 
@@ -120,7 +122,9 @@ function Header({ userData }) {
         <HeaderIcons>
           <NotificationsNoneOutlinedIcon />
           <AccountBalanceWalletOutlinedIcon />
+          {/* <Link to="/order/stocks"> */}
           <ShoppingCartOutlinedIcon />
+          {/* </Link> */}
           <AvatarDropdown>
             <Dropdown overlay={menu} trigger={["click"]} placement="bottomLeft">
               <Avatar
@@ -178,6 +182,10 @@ const HeaderLinks = styled.div`
   font-size: 18px;
   width: 22%;
   justify-content: space-evenly;
+
+  a {
+    color: black;
+  }
 `;
 
 const Explore = styled.div``;
