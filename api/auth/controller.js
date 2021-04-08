@@ -7,8 +7,16 @@ exports.regsiterUser = async(req, res) => {
         var user = await User.findOne({ email: email});
         if(!user){
             user = new User(req.headers);
-            user.setPasswordAndSave(password);
-            res.json({msg: "Success"});
+            await user.setPasswordAndSave(password);
+
+            // auto login on register
+            const auth = new Authentication();
+            const data = {
+                userId: user.id,
+                role: user.role
+            }
+            const token = auth.createAccessToken(data);
+            res.status(200).json({token: token, name: user.name, email: user.email});
         } else {
             res.status(409).json({msg: "Conflict"});
         }
@@ -33,7 +41,7 @@ exports.loginUser = async(req,res) => {
                     role: user.role
                 }
                 const token = auth.createAccessToken(data);
-                res.status(200).json({token: token, name: user.name});
+                res.status(200).json({token: token, name: user.name, email: user.email});
             } else {
                 res.status(401).json({msg: "Unauthorized"});
             }

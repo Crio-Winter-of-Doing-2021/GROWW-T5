@@ -11,11 +11,14 @@ class Context {
         "stocks": ["stocks"],
         "mutual-funds": ["mutualfund"],
         "orders": ["orders"],
+        'stock': ["stocks"],
+        'mutual-fund': ["mutualfund"],
+        'order': ['orders']
     };
 
     // get context parameters from req object
     async generateContext(req) {
-
+        console.log(req.query.pageId)
         // Defining context
         var context = {}
 

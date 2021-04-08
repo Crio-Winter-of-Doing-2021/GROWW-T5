@@ -37,6 +37,13 @@ async function faqBasedOnContext(req, res) {
 
 exports.getAllFAQ = async (req, res) => {
     try {
+
+        if (req.query.type == "Unanswered") {
+            const faqs = await models.FAQ.find({status: "Unanswered"})
+            res.json(faqs).status(200)
+            return;
+        }
+
         if (req.query.message) {
             const reply = await models.FAQ.findOne({question: req.query.message, status: "Answered"});
             if (reply) {
