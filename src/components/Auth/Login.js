@@ -6,6 +6,7 @@ import * as yup from "yup";
 import * as actions from "../../redux/action";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
+const axios = require('axios');
 
 function Login({ setlogin, setIsUSerLogged, onClose, onAuth }) {
   const validationSchema = yup.object({
@@ -22,10 +23,11 @@ function Login({ setlogin, setIsUSerLogged, onClose, onAuth }) {
   const formik = useFormik({
     initialValues: {
       email: "foobar@example.com",
-      password: "foobar",
+      password: "foobar123",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+
       // alert(JSON.stringify(values, null, 2));
       console.log("email->", values.email);
       console.log("password->", values.password);

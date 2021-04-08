@@ -96,7 +96,7 @@ function Order({ match }) {
     <Container>
       <RoutesWrraper>
         <Stocks>
-          <Link to="/order/stocks">
+          <Link to="/orders/stocks">
             {stockColor ? (
               <span style={{ color: "#00d09c", fontWeight: "500" }}>
                 Stocks
@@ -108,7 +108,7 @@ function Order({ match }) {
           </Link>
         </Stocks>
         <MutualFunds>
-          <Link to="/order/mutual-funds">
+          <Link to="/orders/mutual-funds">
             {mutualColor ? (
               <span style={{ color: "#00d09c", fontWeight: "500" }}>
                 Mutual Funds

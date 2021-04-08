@@ -10,6 +10,7 @@ import StockDescription from "./components/StockDescription";
 import FundDescription from "./components/FundDescription";
 import Order from "./components/Order/Order";
 import Admin from "./components/Admin";
+import Dashboard from "./components/Dashboard";
 import {
   BrowserRouter as Router,
   Routes,
@@ -31,8 +32,8 @@ function App() {
     <div className="App">
       {showBot && <Chatbots />}
       <Button onClick={() => toggleBot((prev) => !prev)}>Bot</Button>
-      <Header />
       <Router>
+        <Header />
         {/* <Switch> */}
         <Route path="/gold">
           <RoutesHeader category="gold" />
@@ -57,18 +58,12 @@ function App() {
           component={FundDescription}
         ></Route>
 
-        <Route path="/order/:category" component={Order}>
+        <Route path="/orders/:category" component={Order}>
           {/* <Order /> */}
         </Route>
         <Route path="/admin" component={Admin}></Route>
 
-        <Route
-          exact
-          path="/"
-          render={() => {
-            return <Redirect to="/stocks" />;
-          }}
-        />
+        <Route exact path="/" component={Dashboard} />
         {/* </Switch> */}
         <Footer />
       </Router>

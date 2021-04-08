@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import TextField from "@material-ui/core/TextField";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import * as actions from "../../redux/action";
@@ -8,6 +10,12 @@ import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 
 function Signup({ setlogin, setIsUSerLogged, onClose, onAuth }) {
+  const [checked, setChecked] = useState(true);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
+
   const validationSchema = yup.object({
     name: yup.string("Enter your name").required("Name is required"),
     email: yup
@@ -69,6 +77,18 @@ function Signup({ setlogin, setIsUSerLogged, onClose, onAuth }) {
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
+          />
+          <FormControlLabel
+            value="end"
+            control={
+              <Checkbox
+                checked={checked}
+                onChange={handleChange}
+                color="primary"
+              />
+            }
+            label="KYC"
+            labelPlacement="end"
           />
           <Button color="primary" variant="contained" fullWidth type="submit">
             Submit

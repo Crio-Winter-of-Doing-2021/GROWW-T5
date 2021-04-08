@@ -7,17 +7,14 @@ import Faqs from "./Widgets/Faq";
 const config = {
   initialMessages: [
     createChatBotMessage(`Hello world`),
-    createChatBotMessage(
-      "Maybe these will help you.",
-      {
-        withAvatar: false,
-        delay: 500,
-        widget: "overview",
-      }
-    ),
+    createChatBotMessage("Maybe these will help you.", {
+      withAvatar: false,
+      delay: 500,
+      widget: "overview",
+    }),
   ],
   state: {
-    faqs: null
+    faqs: null,
   },
   botName: "GrowwBot",
   customComponents: {
