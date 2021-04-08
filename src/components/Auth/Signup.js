@@ -30,9 +30,9 @@ function Signup({ setlogin, setIsUSerLogged, onClose, onAuth }) {
 
   const formik = useFormik({
     initialValues: {
-      name: "foo",
-      email: "foobar@example.com",
-      password: "foobar",
+      name: "",
+      email: "",
+      password: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {

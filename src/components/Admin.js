@@ -9,20 +9,25 @@ import * as yup from "yup";
 
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
+import axios from '../axios';
 
 function Admin() {
-  // const [faqs, setfaqs] = useState([]);
+  const [faqs, setfaqs] = useState([]);
 
   const [open, setOpen] = useState(false);
   const [chips, setChips] = useState([]);
-  const [ques, setQues] = useState("");
+  const [faq, setFaq] = useState("");
   const [login, setlogin] = useState(true);
+  const [refresh, setrefresh] = useState(true);
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
 
+  const [question, setQuestion] = useState("");
+  const [answer, setanswer] = useState("");
+
+
   const validationSchema = yup.object({
-    name: yup.string("Enter your name").required("Name is required"),
     email: yup
       .string("Enter your email")
       .email("Enter a valid email")
@@ -35,54 +40,89 @@ function Admin() {
 
   const formik = useFormik({
     initialValues: {
-      name: "foo",
-      email: "foobar@example.com",
-      password: "foobar",
+      email: "",
+      password: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      let config = {
+        headers: {
+          email: values.email,
+          password: values.password
+        }
+      }
+      axios.post('/api/v1/auth/login', {}, config)
+      .then((res) => {
+        localStorage.setItem("admintoken", res.data.token)
+      })
+      .catch((err) => console.log(err))
+
       setlogin((prev) => !prev);
       // onClose((prev) => !prev);
       // alert(JSON.stringify(values, null, 2));
     },
   });
 
-  const faqs = [
-    {
-      id: "1",
-      questions: "Do Kyc Verification",
-    },
-    {
-      id: "2",
-      questions: "Define stock",
-    },
-    {
-      id: "3",
-      questions: "Define mutual funds",
-    },
-    {
-      id: "4",
-      questions: "Define Gold",
-    },
-    {
-      id: "5",
-      questions: "Define Us Stocks",
-    },
-  ];
+  // const faqs = [
+  //   {
+  //     id: "1",
+  //     questions: "Do Kyc Verification",
+  //   },
+  //   {
+  //     id: "2",
+  //     questions: "Define stock",
+  //   },
+  //   {
+  //     id: "3",
+  //     questions: "Define mutual funds",
+  //   },
+  //   {
+  //     id: "4",
+  //     questions: "Define Gold",
+  //   },
+  //   {
+  //     id: "5",
+  //     questions: "Define Us Stocks",
+  //   },
+  // ];
 
   const ParticularFaq = (ids) => {
-    const pfaq = faqs.find(({ id }) => id === ids);
-
-    setQues(pfaq.questions);
+    axios.get(`/api/v1/faq/${ids}`)
+    .then((res) => {
+      setFaq(res.data)
+      setQuestion(res.data.question)
+    })
+    .catch((error) => console.log(error))
 
     onOpenModal();
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get("url of unanswered faqs")
-  //     .then((res) => setfaqs(res.data.faqs));
-  // }, [faqs]);
+  const updateFaq = (ids) => {
+    let config = {
+      headers: {
+        accesstoken: localStorage.getItem("admintoken")
+      }
+    }
+    let body = {
+      question: question,
+      answer: answer,
+      tags: chips
+    }
+    axios.put(`/api/v1/faq/${ids}`, body, config)
+    .then((res) => {
+      setrefresh(!refresh)
+      setChips([])
+      setanswer("")
+      onCloseModal()
+    })
+    .catch((error) => console.log(error))
+    
+  }
+
+  useEffect(() => {
+    axios.get("/api/v1/faq?type=Unanswered")
+      .then((res) => setfaqs(res.data));
+  }, [refresh]);
 
   return (
     <Container>
@@ -91,16 +131,6 @@ function Admin() {
           <SignupHeader>ADMIN FORM</SignupHeader>
           <InputContainer>
             <form onSubmit={formik.handleSubmit} autocomplete="off">
-              <TextField
-                fullWidth
-                id="name"
-                name="name"
-                label="Your Name"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                error={formik.touched.name && Boolean(formik.errors.name)}
-                helperText={formik.touched.name && formik.errors.name}
-              />
               <TextField
                 fullWidth
                 id="email"
@@ -140,13 +170,13 @@ function Admin() {
         <Container>
           <Heading>UNANSWERED FAQS</Heading>
           <Orders>
-            {faqs.map(({ questions, id }) => (
+            {faqs.map(({ question, _id }) => (
               <Row
                 onClick={() => {
-                  ParticularFaq(id);
+                  ParticularFaq(_id);
                 }}
               >
-                <div>{questions}</div>
+                <div>{question}</div>
               </Row>
             ))}
           </Orders>
@@ -157,8 +187,8 @@ function Admin() {
         <ModalContainer>
           <ModalHeading>FAQ Form</ModalHeading>
 
-          <input placeholder="Question" value={ques} readOnly />
-          <input placeholder="Answer" />
+          <input placeholder="Question" value={question} onChange={(e) => setQuestion(e.target.value)}/>
+          <input placeholder="Answer" value={answer} onChange={(e) => setanswer(e.target.value)}/>
           <Chips
             className="chipsm"
             value={chips}
@@ -169,10 +199,11 @@ function Admin() {
               "Gold",
               "Fixed Deposits",
               "Source",
+              "kyc"
             ]}
           />
 
-          <SubmitButton>Submit</SubmitButton>
+          <SubmitButton onClick={() => updateFaq(faq._id)}>Submit</SubmitButton>
         </ModalContainer>
       </Modal>
     </Container>

@@ -1,11 +1,3 @@
-// export const BALANCE = "balance"
-
-// export default function getBalance(response){
-//     return {
-//         type : BALANCE,
-//         balance : response.data.wordLimit,
-//     }
-// }
 import * as actionTypes from "./type";
 import axios from "../axios";
 
@@ -41,22 +33,13 @@ export const authLogin = (email, password) => {
         password: password, },
     };
 
-    // if (email && password) {
-    //   dispatch(
-    //     authSuccess({
-    //       email: email,
-    //       password: password,
-    //     })
-    //   );
-    //   console.log("success login");
-    // } else {
-    //   dispatch(authFail());
-    //   console.log("login failed");
-    // }
     axios
-      .post("/api/v1/auth/login", authData)
+      .post("/api/v1/auth/login", {}, authData)
       .then((response) => {
         console.log(response);
+        localStorage.setItem("accesstoken", response.data.token)
+        localStorage.setItem("name", response.data.name)
+        localStorage.setItem("email", response.data.email)
         dispatch(authSuccess(response.data));
       })
       .catch((error) => {
@@ -69,34 +52,26 @@ export const authLogin = (email, password) => {
 export const authSignUp = (name, email, password) => {
   return (dispatch) => {
     dispatch(authStart());
+    console.log(name)
 
-    const authData = {
-      headers: { name:name,
+    let config = {
+      headers: { 
+        name:name,
         email: email,
-        password: password, },
+        password: password
+      }
     };
 
-    // if (email && password) {
-    //   dispatch(
-    //     authSuccess({
-    //       name: name,
-    //       email: email,
-    //       password: password,
-    //     })
-    //   );
-    //   console.log("success Signup");
-    // } else {
-    //   dispatch(authFail());
-    //   console.log("Signup failed");
-    // }
     axios
-      .post("/api/v1/auth/register", authData)
+      .post("/api/v1/auth/register", {}, config)
       .then((response) => {
-        console.log(response);
+        localStorage.setItem("accesstoken", response.data.token)
+        localStorage.setItem("name", response.data.name)
+        localStorage.setItem("email", response.data.email)
         dispatch(authSuccess(response.data));
       })
       .catch((error) => {
-        console.log("Error", error.message);
+        console.log("Error", error);
         dispatch(authFail());
       });
   };

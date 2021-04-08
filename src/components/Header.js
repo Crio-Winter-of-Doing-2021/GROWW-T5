@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, Dropdown } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -22,11 +22,24 @@ import "antd/dist/antd.css";
 
 function Header({ userData }) {
   const [isUserLogged, setIsUSerLogged] = useState(false);
+  
 
   const [open, setOpen] = useState(false);
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
+
+  const logout = () => {
+    console.log("logout")
+    localStorage.clear()
+    setIsUSerLogged(false)
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem("accesstoken")) {
+      setIsUSerLogged(true);
+    }
+  }, [isUserLogged])
 
   const menu = (
     <Menu>
@@ -88,7 +101,7 @@ function Header({ userData }) {
         </Settings>
       </Menu.Item>
       <Divider />
-      <Menu.Item key="9" onClick={() => setIsUSerLogged((prev) => !prev)}>
+      <Menu.Item key="9" onClick={logout}>
         <LogOut>
           <ExitToAppOutlinedIcon />
           &nbsp; Log Out
@@ -150,7 +163,10 @@ function Header({ userData }) {
 
 const mapStateToProps = (state) => {
   return {
-    userData: state.users,
+    userData: {
+      name: localStorage.getItem("name"),
+      email: localStorage.getItem("email")
+    },
   };
 };
 

@@ -7,6 +7,21 @@ class ActionProvider {
     this.createClientMessage = createClientMessage;
   }
 
+  greet = () => {
+    const message = this.createChatBotMessage("Hello");
+    this.addMessageToBotState(message);
+  };
+
+  raiseTicket = () => {
+    console.log("raise ticket")
+    const message = this.createChatBotMessage("No FAQs found related to this topic. You can a raise a ticket.", {
+      widget: "raiseTicket",
+      withAvatar: true,
+      delay: 500
+    })
+    this.addMessageToBotState(message)
+  }
+
   handleFaqTap = (faqId) => {
     axios.get(`/api/v1/faq/${faqId}`)
     .then((res) => {
@@ -14,15 +29,14 @@ class ActionProvider {
         const message = this.createChatBotMessage(res.data.answer);
         this.addMessageToBotState(message);
       } else {
-        const message = this.createChatBotMessage("Couldn't find your FAQ raise a ticket")
+        const message = this.createChatBotMessage({
+          widget: "raiseTicket",
+          withAvatar: true,
+          delay: 500
+        })
         this.addMessageToState(message);
       }
     });
-  };
-
-  greet = () => {
-    const message = this.createChatBotMessage("Hello");
-    this.addMessageToBotState(message);
   };
 
   handleMessage = (message) => {
@@ -45,12 +59,16 @@ class ActionProvider {
             faqs: res.data.faqs,
           }));
           const message = this.createChatBotMessage("Maybe these will help", {
-            widget: "overview",
+            widget: "faqs",
           });
           this.addMessageToBotState(message);
         }
       } else {
-        const message = this.createChatBotMessage("Couldn't find your FAQ raise a ticket")
+        const message = this.createChatBotMessage({
+          widget: "raiseTicket",
+          withAvatar: true,
+          delay: 500
+        })
         this.addMessageToState(message);
       }
     });

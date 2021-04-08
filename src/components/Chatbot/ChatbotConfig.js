@@ -3,15 +3,23 @@ import React from "react";
 import BotAvatar from "./BotAvatar";
 import Overview from "./Widgets/Overview";
 import Faqs from "./Widgets/Faq";
+import RaiseTicket from "./Widgets/RaiseTicket";
+
+const getGreeting = () => {
+  if (localStorage.getItem("name")) {
+    return `Hello ${localStorage.getItem("name")}. I am GrowwBot`
+  } else {
+    return `Hello! I'm GrowwBot`
+  }
+}
 
 const config = {
   initialMessages: [
-    createChatBotMessage(`Hello world`),
-    createChatBotMessage("Maybe these will help you.", {
+    createChatBotMessage(getGreeting(), {
       withAvatar: false,
       delay: 500,
-      widget: "overview",
-    }),
+      widget: "faqs",
+    })
   ],
   state: {
     faqs: null,
@@ -30,20 +38,14 @@ const config = {
   },
   widgets: [
     {
-      widgetName: "overview",
+      widgetName: "faqs",
       widgetFunc: (props) => <Faqs {...props} />,
       mapStateToProps: ["faqs"],
     },
-    // {
-    //   widgetName: "messageParser",
-    //   widgetFunc: (props) => <MessageParser {...props} />,
-    //   mapStateToProps: ["gist"],
-    // },
-    // {
-    //   widgetName: "actionProviderDocs",
-    //   widgetFunc: (props) => <ActionProviderDocs {...props} />,
-    //   mapStateToProps: ["gist"],
-    // },
+    {
+      widgetName: "raiseTicket",
+      widgetFunc: (props) => <RaiseTicket {...props} />,
+    }
   ],
 };
 

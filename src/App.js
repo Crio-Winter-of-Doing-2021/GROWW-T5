@@ -25,7 +25,7 @@ function App() {
   const [showBot, toggleBot] = useState(false);
 
   window.onbeforeunload = function (e) {
-    localStorage.clear();
+    localStorage.removeItem("chat_messages");
   };
 
   return (
