@@ -105,3 +105,7 @@
 .chipsm {
   width: 80% !important;
 }
+
+.MuiCheckbox-colorPrimary.Mui-checked {
+  color: #00d09c !important;
+}

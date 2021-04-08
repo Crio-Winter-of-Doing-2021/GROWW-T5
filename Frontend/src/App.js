@@ -10,6 +10,7 @@ import StockDescription from "./components/StockDescription";
 import FundDescription from "./components/FundDescription";
 import Order from "./components/Order/Order";
 import Admin from "./components/Admin";
+import Dashboard from "./components/Dashboard";
 import {
   BrowserRouter as Router,
   Routes,
@@ -62,13 +63,7 @@ function App() {
         </Route>
         <Route path="/admin" component={Admin}></Route>
 
-        <Route
-          exact
-          path="/"
-          render={() => {
-            return <Redirect to="/stocks" />;
-          }}
-        />
+        <Route exact path="/" component={Dashboard} />
         {/* </Switch> */}
         <Footer />
       </Router>
