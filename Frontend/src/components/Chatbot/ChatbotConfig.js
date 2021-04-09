@@ -3,6 +3,7 @@ import React from "react";
 import BotAvatar from "./BotAvatar";
 import Overview from "./Widgets/Overview";
 import Faqs from "./Widgets/Faq";
+import RaiseTicket from "./Widgets/RaiseTicket";
 
 const config = {
   initialMessages: [
@@ -31,7 +32,7 @@ const config = {
   widgets: [
     {
       widgetName: "overview",
-      widgetFunc: (props) => <Overview {...props} />,
+      widgetFunc: (props) => <Faqs {...props} />,
       mapStateToProps: ["faqs"],
     },
     // {
