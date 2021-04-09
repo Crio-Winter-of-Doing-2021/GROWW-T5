@@ -18,7 +18,6 @@ class Context {
 
     // get context parameters from req object
     async generateContext(req) {
-        console.log(req.query.pageId)
         // Defining context
         var context = {}
 
@@ -35,13 +34,13 @@ class Context {
         
         if (req.query.pageId == "stock" || req.query.pageId == 'mutual-fund') {
             let product = await models.Product.findById(req.query.productId)
-            context.product = await product.getPayload()
-            return context
+            if (product) {
+                context.product = await product.getPayload() 
+            }
         }
 
         if (req.query.pageId == 'order') {
             context.order = await Order.findById(req.query.orderId).getPayload()
-            return context
         }
 
         if (req.query.pageId) {

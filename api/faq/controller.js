@@ -1,6 +1,7 @@
 const models = require('./models');
 const Context = require('../utils/context');
 const { model } = require('mongoose');
+const productModels = require('../products/models');
 
 exports.getFAQ = async (req, res) => {
     try {
@@ -103,4 +104,28 @@ exports.updateFAQ = async (req, res) => {
     } catch (error) {
         res.status(500).json({msg: error.message});
     }
+}
+
+exports.getFaqTags = async (req, res) => {
+    try {
+        let allTags = [];
+
+        let faqs = await models.FAQ.find({}).select("tags");
+        
+        faqs.forEach((faq) => {
+            allTags = [...allTags, ...faq.tags]
+        })
+
+        let products = await productModels.Product.find({}).select("name")
+        products.forEach((product) => {
+            allTags.push(product.name.toLowerCase().replace(/\s+/g, ""))
+        })
+
+        allTags = [...new Set(allTags)]
+
+        res.status(200).json({tags: allTags})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({msg: error.message});
+    }  
 }

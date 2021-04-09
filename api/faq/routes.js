@@ -7,10 +7,10 @@ const requireAdminLogin = require('../utils/requireAdminLogin');
 
 var router = express.Router();
 
+router.get('/tags', controller.getFaqTags);
 router.get('/:id', controller.getFAQ);
 router.get('', controller.getAllFAQ);
 router.post('', requireLogin, validator.raiseTicketValidator, controller.raiseFAQTicket);
 router.put('/:id', requireAdminLogin, controller.updateFAQ);
-// router.get('/tags', )
 
 module.exports = router;
