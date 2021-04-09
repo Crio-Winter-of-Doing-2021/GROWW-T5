@@ -13,17 +13,25 @@ import axios from '../axios';
 
 function Admin() {
   const [faqs, setfaqs] = useState([]);
-
   const [open, setOpen] = useState(false);
   const [chips, setChips] = useState([]);
   const [faq, setFaq] = useState({});
   const [login, setlogin] = useState(true);
   const [refresh, setrefresh] = useState(true);
+  const [suggestions, setSuggestions] = useState([]);
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
 
+  const fetchSuggestions = () => {
+    
 
+    let tags = []
+    
+    console.log(tags)
+
+    return tags
+  }
 
   const validationSchema = yup.object({
     email: yup
@@ -89,8 +97,24 @@ function Admin() {
   }
 
   useEffect(() => {
-    axios.get("/api/v1/faq?type=Unanswered")
-      .then((res) => setfaqs(res.data));
+    if (localStorage.getItem("admintoken")) {
+      setlogin((prev) => !prev);
+    }
+
+    let config = {
+      headers: {
+        accesstoken: localStorage.getItem("admintoken")
+      }
+    }
+
+    axios.get("/api/v1/faq/tags", {}, config)
+    .then((res) => setSuggestions(res.data.tags))
+    .catch((error) => console.log(error))
+
+    axios.get("/api/v1/faq?type=Unanswered", {}, config)
+      .then((res) => setfaqs(res.data))
+      .catch((error) => console.log(error) );
+
   }, [refresh]);
 
   return (
@@ -162,13 +186,7 @@ function Admin() {
             className="chipsm"
             value={chips}
             onChange={(chips) => setChips(chips)}
-            suggestions={[
-              "stocks",
-              "mutualfunds",
-              "kyc",
-              "orders",
-              "accountcreation"
-            ]}
+            suggestions={suggestions}
           />
           <SubmitButton onClick={() => updateFaq(faq._id)}>Submit</SubmitButton>
 
