@@ -15,7 +15,8 @@ const getGreeting = () => {
 
 const config = {
   initialMessages: [
-    createChatBotMessage(getGreeting(), {
+    createChatBotMessage(getGreeting()),
+    createChatBotMessage("Perhaps these will help", {
       withAvatar: false,
       delay: 500,
       widget: "faqs",

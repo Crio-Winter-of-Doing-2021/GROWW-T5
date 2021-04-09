@@ -12,7 +12,7 @@ const Faqs = (props) => {
   useEffect(() => {
     if (props.faqs) {
       setfaqs(props.faqs);
-    } else {
+    }else {
       let config = {
         headers: { accesstoken: localStorage.getItem("accesstoken") },
         params: {

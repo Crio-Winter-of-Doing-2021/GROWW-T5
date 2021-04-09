@@ -16,15 +16,13 @@ function Admin() {
 
   const [open, setOpen] = useState(false);
   const [chips, setChips] = useState([]);
-  const [faq, setFaq] = useState("");
+  const [faq, setFaq] = useState({});
   const [login, setlogin] = useState(true);
   const [refresh, setrefresh] = useState(true);
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
 
-  const [question, setQuestion] = useState("");
-  const [answer, setanswer] = useState("");
 
 
   const validationSchema = yup.object({
@@ -56,41 +54,14 @@ function Admin() {
         localStorage.setItem("admintoken", res.data.token)
       })
       .catch((err) => console.log(err))
-
       setlogin((prev) => !prev);
-      // onClose((prev) => !prev);
-      // alert(JSON.stringify(values, null, 2));
     },
   });
 
-  // const faqs = [
-  //   {
-  //     id: "1",
-  //     questions: "Do Kyc Verification",
-  //   },
-  //   {
-  //     id: "2",
-  //     questions: "Define stock",
-  //   },
-  //   {
-  //     id: "3",
-  //     questions: "Define mutual funds",
-  //   },
-  //   {
-  //     id: "4",
-  //     questions: "Define Gold",
-  //   },
-  //   {
-  //     id: "5",
-  //     questions: "Define Us Stocks",
-  //   },
-  // ];
-
-  const ParticularFaq = (ids) => {
+  const particularFaq = (ids) => {
     axios.get(`/api/v1/faq/${ids}`)
     .then((res) => {
       setFaq(res.data)
-      setQuestion(res.data.question)
     })
     .catch((error) => console.log(error))
 
@@ -98,25 +69,23 @@ function Admin() {
   };
 
   const updateFaq = (ids) => {
+    console.log(faq)
     let config = {
       headers: {
         accesstoken: localStorage.getItem("admintoken")
       }
     }
     let body = {
-      question: question,
-      answer: answer,
+      question: faq.question,
+      answer: faq.answer,
       tags: chips
     }
     axios.put(`/api/v1/faq/${ids}`, body, config)
     .then((res) => {
       setrefresh(!refresh)
-      setChips([])
-      setanswer("")
       onCloseModal()
     })
     .catch((error) => console.log(error))
-    
   }
 
   useEffect(() => {
@@ -173,7 +142,7 @@ function Admin() {
             {faqs.map(({ question, _id }) => (
               <Row
                 onClick={() => {
-                  ParticularFaq(_id);
+                  particularFaq(_id);
                 }}
               >
                 <div>{question}</div>
@@ -187,23 +156,22 @@ function Admin() {
         <ModalContainer>
           <ModalHeading>FAQ Form</ModalHeading>
 
-          <input placeholder="Question" value={question} onChange={(e) => setQuestion(e.target.value)}/>
-          <input placeholder="Answer" value={answer} onChange={(e) => setanswer(e.target.value)}/>
+          <input placeholder="Question" value={faq.question} onChange={(e) => setFaq({...faq, question: e.target.value})}/>
+          <input placeholder="Answer" value={faq.answer} onChange={(e) => setFaq({...faq, answer: e.target.value})}/>
           <Chips
             className="chipsm"
             value={chips}
             onChange={(chips) => setChips(chips)}
             suggestions={[
-              "Stocks",
-              "Mutual Funds",
-              "Gold",
-              "Fixed Deposits",
-              "Source",
-              "kyc"
+              "stocks",
+              "mutualfunds",
+              "kyc",
+              "orders",
+              "accountcreation"
             ]}
           />
-
           <SubmitButton onClick={() => updateFaq(faq._id)}>Submit</SubmitButton>
+
         </ModalContainer>
       </Modal>
     </Container>

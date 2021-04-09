@@ -15,7 +15,7 @@ function RaiseTicket() {
       setMessage("Login To Raise Ticket");
         setTimeout(() => {
             setMessage("");
-        }, 2000); 
+        }, 5000); 
     }
 
     let config = {
@@ -26,16 +26,17 @@ function RaiseTicket() {
     let body = {
       question: question
     }
+
     axios.post('/api/v1/faq', body, config)
     .then((res) => {
       setMessage("Successfully Added");
         setTimeout(() => {
             setMessage("");
         }, 2000); 
+      setQuestion(null);
       onCloseModal();
     })
-    
-    
+      
   };
   return (
     <Container>

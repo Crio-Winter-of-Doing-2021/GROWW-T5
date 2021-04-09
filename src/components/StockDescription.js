@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Card from "./Card";
 import { Link, useRouteMatch } from "react-router-dom";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import Header from "./Header";
+import Footer from "./Footer";
 
 function StockDescription({ match }) {
   let { path, url } = useRouteMatch();
@@ -87,6 +89,7 @@ function StockDescription({ match }) {
   );
 
   return (
+    
     <Container>
       <StockLink>
         <Link to="/stocks">

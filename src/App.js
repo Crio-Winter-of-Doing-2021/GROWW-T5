@@ -32,41 +32,42 @@ function App() {
     <div className="App">
       {showBot && <Chatbots />}
       <Button onClick={() => toggleBot((prev) => !prev)}>Bot</Button>
-      <Router>
-        <Header />
-        {/* <Switch> */}
-        <Route path="/gold">
-          <RoutesHeader category="gold" />
-        </Route>
-        <Route path="/us-stocks">
-          <RoutesHeader category="us-stocks" />
-        </Route>
-        <Route path="/fixed-deposits">
-          <RoutesHeader category="fixed-deposits" />
-        </Route>
-        <Route path="/mutual-funds">
-          <RoutesHeader category="mutual-funds" />
-          <Funds />
-        </Route>
-        <Route path="/stocks">
-          <RoutesHeader category="stocks" />
-          <Stocks />
-        </Route>
-        <Route path="/stock/:stockname" component={StockDescription}></Route>
-        <Route
-          path="/mutual-fund/:fundname"
-          component={FundDescription}
-        ></Route>
 
-        <Route path="/orders/:category" component={Order}>
-          {/* <Order /> */}
-        </Route>
-        <Route path="/admin" component={Admin}></Route>
+        <Router>
+          <Header />
 
-        <Route exact path="/" component={Dashboard} />
-        {/* </Switch> */}
-        <Footer />
-      </Router>
+          <Route path="/gold">
+            <RoutesHeader category="gold" />
+          </Route>
+          <Route path="/us-stocks">
+            <RoutesHeader category="us-stocks" />
+          </Route>
+          <Route path="/fixed-deposits">
+            <RoutesHeader category="fixed-deposits" />
+          </Route>
+          <Route path="/mutual-funds">
+            <RoutesHeader category="mutual-funds" />
+            <Funds />
+          </Route>
+          <Route path="/stocks">
+            <RoutesHeader category="stocks" />
+            <Stocks />
+          </Route>
+
+          <Route path="/stock/:stockname" component={StockDescription}></Route>
+          <Route path="/mutual-fund/:fundname" component={FundDescription}></Route>
+          <Route path="/orders/:category" component={Order}></Route>
+          <Route exact path="/" component={Dashboard} />
+          {/* <Route path="/admin" component={Admin}></Route> */}
+
+          <Footer />
+
+          <Switch>
+            <Route exact path="/admin" component={Admin} />
+          </Switch>
+          
+          
+        </Router>
     </div>
   );
 }
