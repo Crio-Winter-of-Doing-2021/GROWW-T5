@@ -20,12 +20,14 @@ import {
   Redirect,
 } from "react-router-dom";
 import { useState } from "react";
+import SorderDescription from "./components/Order/SorderDescription";
+import ForderDescription from "./components/Order/ForderDescription";
 
 function App() {
   const [showBot, toggleBot] = useState(false);
 
   window.onbeforeunload = function (e) {
-    localStorage.clear();
+    localStorage.removeItem("chat_messages");
   };
 
   return (
@@ -58,9 +60,10 @@ function App() {
           component={FundDescription}
         ></Route>
 
-        <Route path="/orders/:category" component={Order}>
-          {/* <Order /> */}
-        </Route>
+        <Route path="/order/stock/:id" component={SorderDescription}></Route>
+        <Route path="/order/fund/:id" component={ForderDescription}></Route>
+
+        <Route path="/orders/:category" component={Order}></Route>
         <Route path="/admin" component={Admin}></Route>
 
         <Route exact path="/" component={Dashboard} />

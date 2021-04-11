@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, Dropdown } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -19,14 +19,28 @@ import TextField from "@material-ui/core/TextField";
 import AuthModal from "./Auth/AuthModal";
 import "react-responsive-modal/styles.css";
 import "antd/dist/antd.css";
+import axios from "axios";
 
 function Header({ userData }) {
   const [isUserLogged, setIsUSerLogged] = useState(false);
+  const [kyc, setKyc] = useState("Verify KYC");
 
   const [open, setOpen] = useState(false);
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
+
+  const logout = () => {
+    console.log("logout");
+    localStorage.clear();
+    setIsUSerLogged(false);
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("accesstoken")) {
+      setIsUSerLogged(true);
+    }
+  }, [isUserLogged]);
 
   const menu = (
     <Menu>
@@ -40,10 +54,22 @@ function Header({ userData }) {
           <Email>{userData.email}</Email>
         </NameAndEmail>
       </UserInformation>
-      <Menu.Item key="2">
+      <Menu.Item
+        key="2"
+        onClick={() => {
+          axios
+            .get("/api/v1/auth/kyc")
+            .then((res) => {
+              setKyc("KYC Verified");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }}
+      >
         <BankBalance>
           <AccountBalanceOutlinedIcon />
-          &nbsp; Bank & AutoPay
+          &nbsp; {kyc}
         </BankBalance>
       </Menu.Item>
       <Divider />
@@ -88,7 +114,7 @@ function Header({ userData }) {
         </Settings>
       </Menu.Item>
       <Divider />
-      <Menu.Item key="9" onClick={() => setIsUSerLogged((prev) => !prev)}>
+      <Menu.Item key="9" onClick={logout}>
         <LogOut>
           <ExitToAppOutlinedIcon />
           &nbsp; Log Out
@@ -150,7 +176,10 @@ function Header({ userData }) {
 
 const mapStateToProps = (state) => {
   return {
-    userData: state.users,
+    userData: {
+      name: localStorage.getItem("name"),
+      email: localStorage.getItem("email"),
+    },
   };
 };
 
@@ -169,7 +198,6 @@ const HeaderContainer = styled.div`
 const HeaderLogo = styled.div`
   display: flex;
   align-items: center;
-
   img {
     height: 43px;
     object-fit: contain;
@@ -182,7 +210,6 @@ const HeaderLinks = styled.div`
   font-size: 18px;
   width: 22%;
   justify-content: space-evenly;
-
   a {
     color: black;
   }
@@ -201,7 +228,6 @@ const HeaderSearch = styled.div`
   padding-right: 5px;
   margin-left: 1%;
   border-radius: 5px;
-
   input {
     width: 100%;
     border: none;
@@ -223,7 +249,6 @@ const AvatarDropdown = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-
   .MuiAvatar-root {
     width: 34px;
     height: 34px;
@@ -237,7 +262,6 @@ const UserInformation = styled.div`
   padding-top: 10px;
   padding-bottom: 15px;
   background-color: #f9fafa;
-
   .MuiAvatar-root {
     width: 50px;
     height: 50px;
@@ -252,7 +276,6 @@ const NameAndEmail = styled.div`
 const Name = styled.div`
   font-weight: 600;
   cursor: pointer;
-
   &:hover {
     color: #00d09c;
   }

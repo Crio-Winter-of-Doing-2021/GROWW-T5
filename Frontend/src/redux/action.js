@@ -1,11 +1,3 @@
-// export const BALANCE = "balance"
-
-// export default function getBalance(response){
-//     return {
-//         type : BALANCE,
-//         balance : response.data.wordLimit,
-//     }
-// }
 import * as actionTypes from "./type";
 import axios from "../axios";
 
@@ -32,23 +24,39 @@ export const authFail = (error) => {
   };
 };
 
-export const authLogin = (email, password) => {
+export const authLogin = (email, password, setIsUSerLogged, onClose) => {
   return (dispatch) => {
     dispatch(authStart());
     const authData = {
-      email: email,
-      password: password,
+      headers: {
+        email: email,
+        password: password,
+      },
     };
 
+    // if (email == "priyansh@pr.pr" && password == "priyansh1") {
+    //   dispatch(authSuccess({ email }));
+    //   setIsUSerLogged((prev) => !prev);
+    //   onClose((prev) => !prev);
+    // } else {
+    //   dispatch(authFail("Invalid Credentials"));
+    // }
+
     axios
-      .post("/api/v1/auth/register", {}, authData)
+      .post("/api/v1/auth/login", {}, authData)
       .then((response) => {
         console.log(response);
+        localStorage.setItem("accesstoken", response.data.token);
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("email", response.data.email);
         dispatch(authSuccess(response.data));
+
+        setIsUSerLogged((prev) => !prev);
+        onClose((prev) => !prev);
       })
       .catch((error) => {
         console.log("Error", error.message);
-        dispatch(authFail());
+        dispatch(authFail("Invalid Credentials"));
       });
   };
 };
@@ -56,8 +64,9 @@ export const authLogin = (email, password) => {
 export const authSignUp = (name, email, password) => {
   return (dispatch) => {
     dispatch(authStart());
+    console.log(name);
 
-    const authData = {
+    let config = {
       headers: {
         name: name,
         email: email,
@@ -66,14 +75,16 @@ export const authSignUp = (name, email, password) => {
     };
 
     axios
-      .post("/api/v1/auth/register", {}, authData)
+      .post("/api/v1/auth/register", {}, config)
       .then((response) => {
-        console.log(response);
+        localStorage.setItem("accesstoken", response.data.token);
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("email", response.data.email);
         dispatch(authSuccess(response.data));
       })
       .catch((error) => {
-        console.log("Error", error.message);
-        dispatch(authFail(error.message));
+        console.log("Error", error);
+        dispatch(authFail());
       });
   };
 };

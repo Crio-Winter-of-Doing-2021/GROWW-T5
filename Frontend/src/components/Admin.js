@@ -9,20 +9,29 @@ import * as yup from "yup";
 
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
+import axios from "../axios";
 
 function Admin() {
-  // const [faqs, setfaqs] = useState([]);
-
+  const [faqs, setfaqs] = useState([]);
   const [open, setOpen] = useState(false);
   const [chips, setChips] = useState([]);
-  const [ques, setQues] = useState("");
+  const [faq, setFaq] = useState({});
   const [login, setlogin] = useState(true);
+  const [refresh, setrefresh] = useState(true);
+  const [suggestions, setSuggestions] = useState([]);
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
 
+  const fetchSuggestions = () => {
+    let tags = [];
+
+    console.log(tags);
+
+    return tags;
+  };
+
   const validationSchema = yup.object({
-    name: yup.string("Enter your name").required("Name is required"),
     email: yup
       .string("Enter your email")
       .email("Enter a valid email")
@@ -35,54 +44,80 @@ function Admin() {
 
   const formik = useFormik({
     initialValues: {
-      name: "foo",
-      email: "foobar@example.com",
-      password: "foobar",
+      email: "",
+      password: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      let config = {
+        headers: {
+          email: values.email,
+          password: values.password,
+        },
+      };
+      axios
+        .post("/api/v1/auth/login", {}, config)
+        .then((res) => {
+          localStorage.setItem("admintoken", res.data.token);
+        })
+        .catch((err) => console.log(err));
       setlogin((prev) => !prev);
-      // onClose((prev) => !prev);
-      // alert(JSON.stringify(values, null, 2));
     },
   });
 
-  const faqs = [
-    {
-      id: "1",
-      questions: "Do Kyc Verification",
-    },
-    {
-      id: "2",
-      questions: "Define stock",
-    },
-    {
-      id: "3",
-      questions: "Define mutual funds",
-    },
-    {
-      id: "4",
-      questions: "Define Gold",
-    },
-    {
-      id: "5",
-      questions: "Define Us Stocks",
-    },
-  ];
-
-  const ParticularFaq = (ids) => {
-    const pfaq = faqs.find(({ id }) => id === ids);
-
-    setQues(pfaq.questions);
+  const particularFaq = (ids) => {
+    axios
+      .get(`/api/v1/faq/${ids}`)
+      .then((res) => {
+        setFaq(res.data);
+      })
+      .catch((error) => console.log(error));
 
     onOpenModal();
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get("url of unanswered faqs")
-  //     .then((res) => setfaqs(res.data.faqs));
-  // }, [faqs]);
+  const updateFaq = (ids) => {
+    console.log(faq);
+    let config = {
+      headers: {
+        accesstoken: localStorage.getItem("admintoken"),
+      },
+    };
+    let body = {
+      question: faq.question,
+      answer: faq.answer,
+      tags: chips,
+    };
+    axios
+      .put(`/api/v1/faq/${ids}`, body, config)
+      .then((res) => {
+        setrefresh(!refresh);
+        onCloseModal();
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("admintoken")) {
+      setlogin((prev) => !prev);
+    }
+
+    let config = {
+      headers: {
+        accesstoken: localStorage.getItem("admintoken"),
+      },
+    };
+
+    axios
+      .get("/api/v1/faq/tags", {}, config)
+      .then((res) => setSuggestions(res.data.tags))
+      .catch((error) => console.log(error));
+
+    axios
+      .get("/api/v1/faq?type=Unanswered", {}, config)
+      .then((res) => setfaqs(res.data))
+      .catch((error) => console.log(error));
+  }, [refresh]);
 
   return (
     <Container>
@@ -91,16 +126,6 @@ function Admin() {
           <SignupHeader>ADMIN FORM</SignupHeader>
           <InputContainer>
             <form onSubmit={formik.handleSubmit} autocomplete="off">
-              <TextField
-                fullWidth
-                id="name"
-                name="name"
-                label="Your Name"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                error={formik.touched.name && Boolean(formik.errors.name)}
-                helperText={formik.touched.name && formik.errors.name}
-              />
               <TextField
                 fullWidth
                 id="email"
@@ -140,13 +165,13 @@ function Admin() {
         <Container>
           <Heading>UNANSWERED FAQS</Heading>
           <Orders>
-            {faqs.map(({ questions, id }) => (
+            {faqs.map(({ question, _id }) => (
               <Row
                 onClick={() => {
-                  ParticularFaq(id);
+                  particularFaq(_id);
                 }}
               >
-                <div>{questions}</div>
+                <div>{question}</div>
               </Row>
             ))}
           </Orders>
@@ -157,22 +182,23 @@ function Admin() {
         <ModalContainer>
           <ModalHeading>FAQ Form</ModalHeading>
 
-          <input placeholder="Question" value={ques} readOnly />
-          <input placeholder="Answer" />
+          <input
+            placeholder="Question"
+            value={faq.question}
+            onChange={(e) => setFaq({ ...faq, question: e.target.value })}
+          />
+          <input
+            placeholder="Answer"
+            value={faq.answer}
+            onChange={(e) => setFaq({ ...faq, answer: e.target.value })}
+          />
           <Chips
             className="chipsm"
             value={chips}
             onChange={(chips) => setChips(chips)}
-            suggestions={[
-              "Stocks",
-              "Mutual Funds",
-              "Gold",
-              "Fixed Deposits",
-              "Source",
-            ]}
+            suggestions={suggestions}
           />
-
-          <SubmitButton>Submit</SubmitButton>
+          <SubmitButton onClick={() => updateFaq(faq._id)}>Submit</SubmitButton>
         </ModalContainer>
       </Modal>
     </Container>
@@ -204,7 +230,6 @@ const Row = styled.div`
   justify-content: space-between;
   padding: 10px 12px;
   border: 1px solid lightgray;
-
   :hover{
     box-shadow: 0 1px 9px 0 lightgrey;
     cursor:pointer;
@@ -242,7 +267,6 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: 20px;
-
   input {
     width: 80%;
     margin-bottom: 15px;
@@ -252,7 +276,6 @@ const ModalContainer = styled.div`
     outline-color: #00d09c;
     font-size: 17px;
   }
-
   div{
       width:80%;
       border: 1px solid #7f7777 !important;
@@ -263,7 +286,6 @@ const ModalContainer = styled.div`
           outline:none;
       }
   }
-
   }
 `;
 

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-const axios = require("axios");
+import axios from "../../../axios";
+import RaiseTicket from "./RaiseTicket";
 
 const Faqs = (props) => {
-  console.log(props);
   const [faqs, setfaqs] = useState([]);
 
   let pageId = window.location.href.split("/")[3];
+  console.log(pageId);
 
   useEffect(() => {
     if (props.faqs) {
@@ -19,14 +20,21 @@ const Faqs = (props) => {
         },
       };
       axios
-        .get("http://localhost:4000/api/v1/faq", config)
-        .then((res) => setfaqs(res.data.faqs));
+        .get("/api/v1/faq", config)
+        .then((res) => {
+          if (res.data.faqs) {
+            setfaqs(res.data.faqs);
+          } else {
+            setfaqs(null);
+          }
+        })
+        .catch((error) => setfaqs(null));
     }
   }, []);
 
   return (
     <Container>
-      {faqs &&
+      {faqs ? (
         faqs.map((faq) => (
           <Button
             key={faq._id}
@@ -34,7 +42,10 @@ const Faqs = (props) => {
           >
             {faq.question}
           </Button>
-        ))}
+        ))
+      ) : (
+        <RaiseTicket />
+      )}
     </Container>
   );
 };
