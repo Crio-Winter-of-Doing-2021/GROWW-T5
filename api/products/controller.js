@@ -9,11 +9,9 @@ exports.createProduct = async(req, res) => {
             specifications = new models.Stock(req.body.specifications);
         }
         await specifications.save();
-        const product = new models.Product({
-            name: req.body.name,
-            category: req.body.category,
-            specifications: specifications
-        });
+
+        req.body.specifications = specifications
+        const product = new models.Product(req.body);
         await product.save();
         res.status(201).json({msg: "Created"});
     } catch (err) {

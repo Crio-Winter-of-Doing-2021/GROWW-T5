@@ -7,7 +7,10 @@ const raiseFAQTicket = {
     }),
     body: Joi.object({
         question: Joi.string()
-            .required()
+            .required(),
+        answer: Joi.string()
+            .required(),
+        tags: Joi.array()
     })
 }
 exports.raiseTicketValidator = validate(raiseFAQTicket, {}, {allowUnknown: true})

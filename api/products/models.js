@@ -1,29 +1,52 @@
 const mongoose = require("mongoose");
 
 const stockSchema = new mongoose.Schema({
-    closePrice: String,
-    openPrice: String,
-    volume: String,
     marketCap: String,
-    about: String,
-    value: String,
-    closingPrice: [{type: String}]
+    yearListed: String,
+    director: String,
+    pbRatio: String,
+    peRatio: String,
+    indPE: String,
+    divYield: String,
+    bookValue: String,
+    EPS: String,
+    ROE: String
 });
 exports.Stock = new mongoose.model('Stock', stockSchema);
 const Stock = new mongoose.model('Stock', stockSchema);
 
 const mutualFundSchema = new mongoose.Schema({
     risk: String,
-    nav: String,
+    NAV: String,
     fundSize: String,
     about: String,
-    closePrices: [{type: String}]
+    objective: String,
+    taxImplication: String,
+    minSIP: String,
+    fundStarted: String,
+    expRatio: String,
 });
 exports.MutualFund = new mongoose.model('MutualFund', mutualFundSchema);
 const MutualFund = new mongoose.model('MutualFund', mutualFundSchema);
 
 const productSchema = new mongoose.Schema({
     name: { 
+        type: String,
+        required: true
+    },
+    about: { 
+        type: String,
+        required: true
+    },
+    img: { 
+        type: String,
+        required: true
+    },
+    price: {
+       type: String,
+       required: true, 
+    },
+    rate: {
         type: String,
         required: true
     },

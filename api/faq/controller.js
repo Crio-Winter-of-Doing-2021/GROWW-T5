@@ -81,9 +81,11 @@ exports.getAllFAQ = async (req, res) => {
 
 exports.raiseFAQTicket = async (req, res) => {
     try {
-        const newFaq = new models.FAQ({
-            question: req.body.question
-        });
+        var status = "Unanswered";
+        if (req.body.answer) {
+            status = "Answered"
+        }
+        const newFaq = new models.FAQ({ ...req.body, status: status});
         await newFaq.save();
         res.status(201).json({msg: "Created"});
     } catch (error) {
@@ -130,4 +132,14 @@ exports.getFaqTags = async (req, res) => {
         console.log(error)
         res.status(500).json({msg: error.message});
     }  
+}
+
+exports.createFAQ = async (req, res) => {
+    try {
+        const newFaq = new models.FAQ(req.body, {status: "Answered"});
+        await newFaq.save();
+        res.status(201).json({msg: "Created"});
+    } catch (error) {
+        res.status(500).json({msg: error.message});
+    }
 }
