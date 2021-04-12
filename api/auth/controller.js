@@ -2,9 +2,12 @@ const { User } = require('./models');
 const Authentication = require('../utils/auth')
 
 exports.regsiterUser = async(req, res) => {
+    // registers a new user and issues a jwt access token
+    // headers: email, password, name
     try {
         var { email, password } = req.headers;
         var user = await User.findOne({ email: email});
+
         if(!user){
             user = new User(req.headers);
             await user.setPasswordAndSave(password);
@@ -28,8 +31,10 @@ exports.regsiterUser = async(req, res) => {
 }
 
 exports.loginUser = async(req,res) => {
-    var {email, password} = req.headers;
+    // logs in a new user by issuing a access token
+    // headers: email, password 
     try {
+        var {email, password} = req.headers;
         var user = await User.findOne({email: email});
         if(!user) {
             res.status(404).json({msg: "Not Found"});

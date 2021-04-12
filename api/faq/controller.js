@@ -44,7 +44,7 @@ exports.getAllFAQ = async (req, res) => {
             res.json(faqs).status(200)
             return;
         }
-
+        console.log(req.query)
         if (req.query.message) {
             const reply = await models.FAQ.findOne({question: req.query.message, status: "Answered"});
             if (reply) {
@@ -64,8 +64,10 @@ exports.getAllFAQ = async (req, res) => {
                     reply: null
                 })
             } else {
-                var response = await faqBasedOnContext(req);
-                res.json(response);
+                res.json({
+                    faqs: null,
+                    reply: null
+                });
             }
         } else {
             var response = await faqBasedOnContext(req);

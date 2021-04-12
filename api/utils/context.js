@@ -33,14 +33,27 @@ class Context {
         }
         
         if (req.query.pageId == "stock" || req.query.pageId == 'mutual-fund') {
-            let product = await models.Product.findById(req.query.productId)
-            if (product) {
-                context.product = await product.getPayload() 
+            try {
+                let product = await models.Product.findById(req.query.productId)
+                if (product) {
+                    context.product = await product.getPayload() 
+                }
+            } catch (err) {
+                
             }
+            
         }
 
         if (req.query.pageId == 'order') {
-            context.order = await Order.findById(req.query.orderId).getPayload()
+            try {
+                var order = await Order.findById(req.query.orderId)
+                if (order) {
+                    context.order = await order.getPayload()
+                }
+            } catch (err) {
+                
+            }
+            
         }
 
         if (req.query.pageId) {

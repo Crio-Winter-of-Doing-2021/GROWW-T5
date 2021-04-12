@@ -8,17 +8,15 @@ var cors = require('cors');
 app = express()
 
 // CONNECTING TO DB
-async function dbInit() {
-    try {
-        await mongoose.connect(process.env.DBURI || 'mongodb://root:example@localhost:27017/ExternDB?authSource=admin&w=1', {useNewUrlParser: true, useUnifiedTopology: true});
-        console.log("DATABASE CONNECTED");
-    } catch(err) {
-        console.log(err);
-    }
+function dbInit() {
+    mongoose.connect(process.env.DBURI || 'mongodb://root:example@localhost:27017/ExternDB?authSource=admin&w=1', {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(() => console.log("DATABASE CONNECTED"))
+    .catch((err) => console.log(err))
 }
 
 function createApp() {
     app = express();
+    
     // INITIALIZE ENV VARIABLES
     dotenv.config();
 

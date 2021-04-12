@@ -13,10 +13,15 @@ exports.getOrder = async(req, res) => {
 exports.getAllOrder = async(req, res) => {
     try {
         var orders = await models.Order.find({userId: req.data});
+        var response = []
         for (var i = 0; i < orders.length; i++) {
-            orders[i] = await orders[i].getPayload();
+            var payload = await orders[i].getPayload();
+
+            if (payload.product.category == req.query.category) {
+                response.push(payload)
+            }
         }
-        res.status(200).json(orders);
+        res.status(200).json(response);
     } catch (e) {
         console.log(e.name);
         res.status(500).json({msg: "Server Error"});
