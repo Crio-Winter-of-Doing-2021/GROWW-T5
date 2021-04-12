@@ -11,7 +11,10 @@ function AuthModal({ open, onCloseModal, setIsUSerLogged }) {
     <Modal open={open} onClose={onCloseModal} center>
       <ModalContainer>
         <ImgContainer>
-          <img src="https://assets-netstorage.groww.in/website-assets/prod/1.4.3/build/client/images/patternImg.0edf5760.svg" />
+          <img
+            src="https://assets-netstorage.groww.in/website-assets/prod/1.4.3/build/client/images/patternImg.0edf5760.svg"
+            alt="animation"
+          />
           <TextWrapper>
             <h1>Simple, Free</h1>
             <h1>Investing.</h1>

@@ -1,7 +1,6 @@
 import { createChatBotMessage } from "react-chatbot-kit";
 import React from "react";
 import BotAvatar from "./BotAvatar";
-import Overview from "./Widgets/Overview";
 import Faqs from "./Widgets/Faq";
 import RaiseTicket from "./Widgets/RaiseTicket";
 

@@ -3,11 +3,8 @@ import styled from "styled-components";
 import { Modal } from "react-responsive-modal";
 import Chips from "react-chips";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useFormik } from "formik";
 import * as yup from "yup";
-
-import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import axios from "../axios";
 
@@ -19,17 +16,10 @@ function Admin() {
   const [login, setlogin] = useState(true);
   const [refresh, setrefresh] = useState(true);
   const [suggestions, setSuggestions] = useState([]);
+  const [message, setMessage] = useState("");
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
-
-  const fetchSuggestions = () => {
-    let tags = [];
-
-    console.log(tags);
-
-    return tags;
-  };
 
   const validationSchema = yup.object({
     email: yup
@@ -59,9 +49,15 @@ function Admin() {
         .post("/api/v1/auth/login", {}, config)
         .then((res) => {
           localStorage.setItem("admintoken", res.data.token);
+          setlogin((prev) => !prev);
         })
-        .catch((err) => console.log(err));
-      setlogin((prev) => !prev);
+        .catch((err) => {
+          console.log(err);
+          setMessage("INVALID CREDENTIALS");
+          setTimeout(() => {
+            setMessage("");
+          }, 5000);
+        });
     },
   });
 
@@ -158,6 +154,7 @@ function Admin() {
               >
                 Submit
               </Button>
+              <p style={{ color: "red", marginTop: "10px" }}>{message}</p>
             </form>
           </InputContainer>
         </SignupContainer>
@@ -242,15 +239,15 @@ const SignupContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 475px;
-  margin: 8px auto;
+  height: 450px;
+  margin: 9% auto;
   box-shadow: 0 1px 5px 0 lightgrey;
   border-radius: 6px;
 `;
 
 const SignupHeader = styled.h1`
-  margin-top: 22px;
-  margin-bottom: 23px;
+  margin-top: 44px;
+  margin-bottom: 46px;
   letter-spacing: 0.3px;
   font-size: 36px;
   font-weight: 600;

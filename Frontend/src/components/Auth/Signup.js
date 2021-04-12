@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled, { keyframes } from "styled-components";
+import React from "react";
+import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 
 import { useFormik } from "formik";
@@ -9,12 +9,6 @@ import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 
 function Signup({ setlogin, setIsUSerLogged, onClose, onAuth }) {
-  const [checked, setChecked] = useState(true);
-
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
-
   const validationSchema = yup.object({
     name: yup.string("Enter your name").required("Name is required"),
     email: yup

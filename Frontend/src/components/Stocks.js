@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Card from "./Card";
-import { Link, useRouteMatch, Route } from "react-router-dom";
-import Description from "./StockDescription";
+
 function Stocks() {
   const stocksArray = [
     {
@@ -43,15 +42,12 @@ function Stocks() {
     },
   ];
 
-  let { path, url } = useRouteMatch();
-  console.log(url);
-
   return (
     <Container>
       {stocksArray.map(
         ({ category, id, img, cardname, cardprice, cardrate }) => (
-          // <Link to={`${url}/${cardname}`}>
           <Card
+            key={id}
             category={category}
             id={id}
             img={img}
@@ -59,7 +55,6 @@ function Stocks() {
             cardprice={cardprice}
             cardrate={cardrate}
           />
-          // </Link>
         )
       )}
     </Container>

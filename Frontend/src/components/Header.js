@@ -15,7 +15,6 @@ import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import DateRangeOutlinedIcon from "@material-ui/icons/DateRangeOutlined";
 import BookmarkBorderOutlinedIcon from "@material-ui/icons/BookmarkBorderOutlined";
-import TextField from "@material-ui/core/TextField";
 import AuthModal from "./Auth/AuthModal";
 import "react-responsive-modal/styles.css";
 import "antd/dist/antd.css";
@@ -57,8 +56,13 @@ function Header({ userData }) {
       <Menu.Item
         key="2"
         onClick={() => {
+          let config = {
+            headers: {
+              accesstoken: localStorage.getItem("accesstoken"),
+            },
+          };
           axios
-            .get("/api/v1/auth/kyc")
+            .get("/api/v1/auth/kyc", config)
             .then((res) => {
               setKyc("KYC Verified");
             })

@@ -1,12 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "./Card";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 function StockDescription({ match }) {
-  let { path, url } = useRouteMatch();
-
   const stocksDescription = [
     {
       id: "dr-reddys-lab",
@@ -210,16 +207,7 @@ const StatsWrapper = styled.div`
 `;
 
 const Col = styled.div``;
-const Row1 = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  margin-top: 22px;
-`;
-const Row2 = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  margin-top: 22px;
-`;
+
 const Market = styled.div``;
 const PERatio = styled.div``;
 const PBRatio = styled.div``;

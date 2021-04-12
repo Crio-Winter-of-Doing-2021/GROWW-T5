@@ -1,13 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "./Card";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 function FundDescription({ match }) {
-  let { path, url } = useRouteMatch();
-  console.log(path, url);
-
   const FundsDescription = [
     {
       id: "icici-prudential-technology-direct-plan-growth",

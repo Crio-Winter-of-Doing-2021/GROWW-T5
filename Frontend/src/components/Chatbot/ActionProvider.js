@@ -31,7 +31,7 @@ class ActionProvider {
         const message = this.createChatBotMessage(res.data.answer);
         this.addMessageToBotState(message);
       } else {
-        const message = this.createChatBotMessage({
+        const message = this.createChatBotMessage("No relavent FAQs found", {
           widget: "raiseTicket",
           withAvatar: true,
           delay: 500,
@@ -55,14 +55,26 @@ class ActionProvider {
           const message = this.createChatBotMessage(res.data.reply.answer);
           this.addMessageToBotState(message);
         } else {
-          this.setState((state) => ({
-            ...state,
-            faqs: res.data.faqs,
-          }));
-          const message = this.createChatBotMessage("Maybe these will help", {
-            widget: "faqs",
-          });
-          this.addMessageToBotState(message);
+          if (res.data.faqs) {
+            this.setState((state) => ({
+              ...state,
+              faqs: res.data.faqs,
+            }));
+            const message = this.createChatBotMessage("Maybe these will help", {
+              widget: "faqs",
+            });
+            this.addMessageToBotState(message);
+          } else {
+            const message = this.createChatBotMessage(
+              "No relavent FAQs found",
+              {
+                widget: "raiseTicket",
+                withAvatar: true,
+                delay: 500,
+              }
+            );
+            this.addMessageToBotState(message);
+          }
         }
       } else {
         const message = this.createChatBotMessage({

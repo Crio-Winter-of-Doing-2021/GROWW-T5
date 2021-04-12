@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "../../axios";
 
 function Order({ match }) {
@@ -13,97 +13,44 @@ function Order({ match }) {
   const [multipleOrder, setMultipleOrder] = useState([]);
 
   useEffect(() => {
-    if (categories == "stocks") {
+    let config = {
+      headers: {
+        accesstoken: localStorage.getItem("accesstoken"),
+      },
+    };
+    console.log(config);
+    if (categories === "stocks") {
       setStockColor(true);
       setStocks(true);
       setMutualFunds(false);
       setMutualColor(false);
-      setMultipleOrder(stockOrders);
 
-      // axios
-      //   .get("url")
-      //   .then((response) => {
-      //     console.log(response.data);
-      //     setMultipleOrder(response.data);
-      //   })
-      //   .catch((error) => {
-      //     console.log("Error", error.message);
-      //   });
-    } else if (categories == "mutual-funds") {
+      axios
+        .get("/api/v1/order?category=Stocks", config)
+        .then((response) => {
+          console.log(response.data);
+          setMultipleOrder(response.data);
+        })
+        .catch((error) => {
+          console.log("Error", error.message);
+        });
+    } else if (categories === "mutual-funds") {
       setStockColor(false);
       setStocks(false);
       setMutualFunds(true);
       setMutualColor(true);
-      setMultipleOrder(fundOrders);
 
-      // axios
-      //   .get("url")
-      //   .then((response) => {
-      //     console.log(response.data);
-      //     setMultipleOrder(response.data);
-      //   })
-      //   .catch((error) => {
-      //     console.log("Error", error.message);
-      //   });
+      axios
+        .get("/api/v1/order?category=Mutual Fund", config)
+        .then((response) => {
+          console.log(response.data);
+          setMultipleOrder(response.data);
+        })
+        .catch((error) => {
+          console.log("Error", error.message);
+        });
     }
   }, [categories]);
-
-  const stockOrders = [
-    {
-      id: "1",
-      name: "stock",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-    {
-      id: "2",
-      name: "stock",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-    {
-      id: "3",
-      name: "stock",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-    {
-      id: "4",
-      name: "stock",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-  ];
-  const fundOrders = [
-    {
-      name: "fund",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-    {
-      name: "fund",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-    {
-      name: "fund",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-    {
-      name: "fund",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-  ];
 
   return (
     <Container>
@@ -143,22 +90,22 @@ function Order({ match }) {
       </HorizontalLine>
 
       <Orders>
-        {multipleOrder.map(({ id, name, Quantity, price, status }) =>
-          name === "stock" ? (
+        {multipleOrder.map(({ id, product, orderSpecs, status }) =>
+          product.category === "Stocks" ? (
             <Link to={`/order/stock/${id}`}>
               <Row>
-                <div>{name}</div>
-                <div>{Quantity}</div>
-                <div>{price}</div>
+                <div>{product.name}</div>
+                <div>{orderSpecs.quantity}</div>
+                <div>{orderSpecs.orderType}</div>
                 <div>{status}</div>
               </Row>
             </Link>
           ) : (
             <Link to={`/order/fund/${id}`}>
               <Row>
-                <div>{name}</div>
-                <div>{Quantity}</div>
-                <div>{price}</div>
+                <div>{product.name}</div>
+                <div>{orderSpecs.investType}</div>
+                <div>{orderSpecs.sipAmount}</div>
                 <div>{status}</div>
               </Row>
             </Link>
@@ -234,7 +181,6 @@ const Orders = styled.div`
   padding-right: 12%;
   padding-top: 30px;
   padding-bottom: 30px;
-
   a {
     color: black;
   }

@@ -15,29 +15,47 @@ function Dashboard() {
       <ColContainer>
         <ColWrapper>
           <Card>
-            <img src="https://assets-netstorage.groww.in/website-assets/prod/1.5.2/build/client/images/mfHome.af668dea.svg"></img>
+            <img
+              src="https://assets-netstorage.groww.in/website-assets/prod/1.5.2/build/client/images/mfHome.af668dea.svg"
+              alt={"funds"}
+            />
             <h2>Mutual Funds</h2>
           </Card>
           <Card>
-            <img src="https://assets-netstorage.groww.in/website-assets/prod/1.5.2/build/client/images/optionHome.5e98a896.svg"></img>
+            <img
+              src="https://assets-netstorage.groww.in/website-assets/prod/1.5.2/build/client/images/optionHome.5e98a896.svg"
+              alt={"future & options"}
+            />
             <h2>Future & Options</h2>
           </Card>
           <Card>
-            <img src="https://assets-netstorage.groww.in/website-assets/prod/1.5.2/build/client/images/goldHome.1c51c78f.svg"></img>
+            <img
+              src="https://assets-netstorage.groww.in/website-assets/prod/1.5.2/build/client/images/goldHome.1c51c78f.svg"
+              alt={"gold"}
+            />
             <h2>Gold</h2>
           </Card>
         </ColWrapper>
         <ColWrapper>
           <Card>
-            <img src="https://assets-netstorage.groww.in/website-assets/prod/1.5.2/build/client/images/stockHome.af2af225.svg"></img>
+            <img
+              src="https://assets-netstorage.groww.in/website-assets/prod/1.5.2/build/client/images/stockHome.af2af225.svg"
+              alt={"stocks"}
+            />
             <h2>Stocks</h2>
           </Card>
           <Card>
-            <img src="https://assets-netstorage.groww.in/website-assets/prod/1.5.2/build/client/images/usHome.fcb18f99.svg"></img>
+            <img
+              src="https://assets-netstorage.groww.in/website-assets/prod/1.5.2/build/client/images/usHome.fcb18f99.svg"
+              alt={"USstocks"}
+            />
             <h2>Us Stocks</h2>
           </Card>
           <Card>
-            <img src="https://assets-netstorage.groww.in/website-assets/prod/1.5.2/build/client/images/fdHome.ba2c5441.svg"></img>
+            <img
+              src="https://assets-netstorage.groww.in/website-assets/prod/1.5.2/build/client/images/fdHome.ba2c5441.svg"
+              alt={"FD"}
+            />
             <h2>Fixed depostis</h2>
           </Card>
         </ColWrapper>

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import { Link, useRouteMatch, Route, Switch } from "react-router-dom";
+
 import styled from "styled-components";
-// import { ReactComponent as OverviewSVG } from "../../../../assets/img/bot-overview.svg";
 
 const Overview = (props) => {
   let category = window.location.href.split("/");
@@ -68,7 +67,7 @@ const Overview = (props) => {
   return (
     <Container>
       {/* {options} */}
-      {category[3] == "stocks"
+      {category[3] === "stocks"
         ? Stockoptions.map((option) => (
             <Button key={option.id} onClick={option.handler}>
               {option.name}

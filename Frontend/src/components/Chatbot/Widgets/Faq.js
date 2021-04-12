@@ -6,18 +6,25 @@ import RaiseTicket from "./RaiseTicket";
 const Faqs = (props) => {
   const [faqs, setfaqs] = useState([]);
 
-  let pageId = window.location.href.split("/")[3];
-  console.log(pageId);
-
   useEffect(() => {
     if (props.faqs) {
       setfaqs(props.faqs);
     } else {
+      let params = {};
+
+      params.pageId = window.location.href.split("/")[3];
+
+      if (params.pageId === "stock" || params.pageId === "mutual-fund") {
+        params.productId = window.location.href.split("/")[4];
+      }
+
+      if (params.pageId === "order") {
+        params.orderId = window.location.href.split("/")[5];
+      }
+      console.log(params);
       let config = {
         headers: { accesstoken: localStorage.getItem("accesstoken") },
-        params: {
-          pageId: pageId,
-        },
+        params: params,
       };
       axios
         .get("/api/v1/faq", config)

@@ -41,6 +41,7 @@ function Funds() {
     <Container>
       {fundsArray.map(({ id, img, cardname, cardprice, cardrate }) => (
         <Card
+          key={id}
           id={id}
           img={img}
           cardname={cardname}

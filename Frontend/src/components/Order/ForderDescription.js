@@ -7,28 +7,16 @@ import axios from "../../axios";
 function ForderDescription() {
   let { id } = useParams();
 
-  const [fund, setfund] = useState({});
-
-  //   {
-  //     "id": "60619c3f64e1ed01023e5cfe",
-  //     "userId": "60463181cba7c314708dd0e3",
-  //     "product": {
-  //         "_id": "6048bdb663b624029fa2ca36",
-  //         "name": "HDFC Direct Plan",
-  //         "category": "Mutual Fund",
-  //         "specifications": "6048bdb663b624029fa2ca35",
-  //         "__v": 0
-  //     },
-  //     "orderSpecs": {
-  //         "investType": "SIP",
-  //         "sipAmount": 50000
-  //     },
-  //     "status": "Completed"
-  // }
+  const [fund, setfund] = useState(null);
 
   useEffect(() => {
+    let config = {
+      headers: {
+        accesstoken: localStorage.getItem("accesstoken"),
+      },
+    };
     axios
-      .get(`url/${id}`)
+      .get(`/api/v1/order/${id}`, config)
       .then((res) => setfund(res.data))
       .catch((error) => console.log(error));
   }, []);
@@ -42,23 +30,25 @@ function ForderDescription() {
           Back
         </Link>
       </FundLink>
-      <DetailCard>
-        <h1 style={{ marginTop: "21px", fontSize: "34px" }}>
-          HDFC Direct Plan
-        </h1>
-        <Row>
-          <h2>INVEST TYPE</h2>
-          <h2>SIP</h2>
-        </Row>
-        <Row>
-          <h2>SIP AMOUNT</h2>
-          <h2>50000</h2>
-        </Row>
-        <Row>
-          <h2>STATUS</h2>
-          <h2>Completed</h2>
-        </Row>
-      </DetailCard>
+      {fund && (
+        <DetailCard>
+          <h1 style={{ marginTop: "21px", fontSize: "34px" }}>
+            {fund.product.name}
+          </h1>
+          <Row>
+            <h2>INVEST TYPE</h2>
+            <h2>{fund.orderSpecs.investType}</h2>
+          </Row>
+          <Row>
+            <h2>SIP AMOUNT</h2>
+            <h2>{fund.orderSpecs.sipAmount}</h2>
+          </Row>
+          <Row>
+            <h2>STATUS</h2>
+            <h2>{fund.status}</h2>
+          </Row>
+        </DetailCard>
+      )}
     </Container>
   );
 }
@@ -76,7 +66,6 @@ const FundLink = styled.div`
   cursor: pointer;
   font-weight: 800;
   text-align: start;
-
   a {
     color: black;
     display: flex;
@@ -85,7 +74,6 @@ const FundLink = styled.div`
     color: #00d09c;
     text-decoration: underline;
   }
-
   .MuiSvgIcon-root {
     width: 13px;
   }
@@ -107,9 +95,7 @@ const Row = styled.div`
   width:54%;
   justify-content: space-between;
   padding: 12px 5px;
-
   border-right: none;
   border-left: none;
-
 }
 `;
