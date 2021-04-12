@@ -24,27 +24,39 @@ export const authFail = (error) => {
   };
 };
 
-export const authLogin = (email, password) => {
+export const authLogin = (email, password, setIsUSerLogged, onClose) => {
   return (dispatch) => {
     dispatch(authStart());
     const authData = {
       headers: {
         email: email,
-        password: password, },
+        password: password,
+      },
     };
+
+    // if (email == "priyansh@pr.pr" && password == "priyansh1") {
+    //   dispatch(authSuccess({ email }));
+    //   setIsUSerLogged((prev) => !prev);
+    //   onClose((prev) => !prev);
+    // } else {
+    //   dispatch(authFail("Invalid Credentials"));
+    // }
 
     axios
       .post("/api/v1/auth/login", {}, authData)
       .then((response) => {
         console.log(response);
-        localStorage.setItem("accesstoken", response.data.token)
-        localStorage.setItem("name", response.data.name)
-        localStorage.setItem("email", response.data.email)
+        localStorage.setItem("accesstoken", response.data.token);
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("email", response.data.email);
         dispatch(authSuccess(response.data));
+
+        setIsUSerLogged((prev) => !prev);
+        onClose((prev) => !prev);
       })
       .catch((error) => {
         console.log("Error", error.message);
-        dispatch(authFail());
+        dispatch(authFail("Invalid Credentials"));
       });
   };
 };
@@ -52,22 +64,22 @@ export const authLogin = (email, password) => {
 export const authSignUp = (name, email, password) => {
   return (dispatch) => {
     dispatch(authStart());
-    console.log(name)
+    console.log(name);
 
     let config = {
-      headers: { 
-        name:name,
+      headers: {
+        name: name,
         email: email,
-        password: password
-      }
+        password: password,
+      },
     };
 
     axios
       .post("/api/v1/auth/register", {}, config)
       .then((response) => {
-        localStorage.setItem("accesstoken", response.data.token)
-        localStorage.setItem("name", response.data.name)
-        localStorage.setItem("email", response.data.email)
+        localStorage.setItem("accesstoken", response.data.token);
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("email", response.data.email);
         dispatch(authSuccess(response.data));
       })
       .catch((error) => {

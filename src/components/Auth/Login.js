@@ -6,9 +6,9 @@ import * as yup from "yup";
 import * as actions from "../../redux/action";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
-const axios = require('axios');
+const axios = require("axios");
 
-function Login({ setlogin, setIsUSerLogged, onClose, onAuth }) {
+function Login({ setlogin, setIsUSerLogged, onClose, onAuth, error }) {
   const validationSchema = yup.object({
     email: yup
       .string("Enter your email")
@@ -27,14 +27,12 @@ function Login({ setlogin, setIsUSerLogged, onClose, onAuth }) {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-
-      // alert(JSON.stringify(values, null, 2));
       console.log("email->", values.email);
       console.log("password->", values.password);
-      onAuth(values.email, values.password);
+      onAuth(values.email, values.password, setIsUSerLogged, onClose);
       console.log("going");
-      setIsUSerLogged((prev) => !prev);
-      onClose((prev) => !prev);
+      // setIsUSerLogged((prev) => !prev);
+      // onClose((prev) => !prev);
     },
   });
 
@@ -70,25 +68,32 @@ function Login({ setlogin, setIsUSerLogged, onClose, onAuth }) {
           </Button>
         </form>
       </InputContainer>
-      {/* <SubmitButton>Submit</SubmitButton> */}
+
       <SignupLinkContainer>
         New here? Click here to{" "}
         <SignupLink onClick={() => setlogin((prev) => !prev)}>
           create an account
         </SignupLink>
+        <p style={{ color: "red", textAlign: "center" }}>{error}</p>
       </SignupLinkContainer>
     </LoginContainer>
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    onAuth: (email, password) => dispatch(actions.authLogin(email, password)),
+    error: state.error,
   };
 };
 
-// export default Login;
-export default connect(null, mapDispatchToProps)(Login);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAuth: (email, password, setIsUSerLogged, onClose) =>
+      dispatch(actions.authLogin(email, password, setIsUSerLogged, onClose)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 const LoginContainer = styled.div`
   width: 450px;
@@ -114,7 +119,6 @@ const InputContainer = styled.div`
 const EmailInput = styled.div`
   width: 100%;
   margin-bottom: 30px;
-
   input {
     width: 97%;
     height: 30px;
@@ -125,7 +129,6 @@ const EmailInput = styled.div`
 const PasswordInput = styled.div`
   width: 100%;
   margin-bottom: 30px;
-
   input {
     width: 97%;
     height: 30px;
@@ -149,7 +152,6 @@ const SubmitButton = styled.button`
 const SignupLink = styled.span`
   cursor: pointer;
   font-weight: 800;
-
   :hover {
     color: #00d09c;
     text-decoration: underline;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Modal } from "react-responsive-modal";
-import axios from '../../../axios';
+import axios from "../../../axios";
 
 function RaiseTicket() {
   const [open, setOpen] = useState(false);
@@ -13,30 +13,28 @@ function RaiseTicket() {
   const SubmitForm = () => {
     if (!localStorage.getItem("accesstoken")) {
       setMessage("Login To Raise Ticket");
-        setTimeout(() => {
-            setMessage("");
-        }, 5000); 
+      setTimeout(() => {
+        setMessage("");
+      }, 5000);
     }
 
     let config = {
       headers: {
-        accesstoken: localStorage.getItem("accesstoken")
-      }
-    }
+        accesstoken: localStorage.getItem("accesstoken"),
+      },
+    };
     let body = {
-      question: question
-    }
+      question: question,
+    };
 
-    axios.post('/api/v1/faq', body, config)
-    .then((res) => {
+    axios.post("/api/v1/faq", body, config).then((res) => {
       setMessage("Successfully Added");
-        setTimeout(() => {
-            setMessage("");
-        }, 2000); 
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
       setQuestion(null);
       onCloseModal();
-    })
-      
+    });
   };
   return (
     <Container>
@@ -45,7 +43,11 @@ function RaiseTicket() {
       <Modal open={open} onClose={onCloseModal} center>
         <ModalContainer>
           <ModalHeading> Form </ModalHeading>
-          <input value={question} placeholder="Question" onChange={(e) => setQuestion(e.target.value)}/>
+          <input
+            value={question}
+            placeholder="Question"
+            onChange={(e) => setQuestion(e.target.value)}
+          />
           <SubmitButton onClick={SubmitForm}>Submit</SubmitButton>
           {message}
         </ModalContainer>
@@ -63,8 +65,8 @@ const Container = styled.div`
 const Button = styled.button`
   border-radius: 25px;
   padding: 8px;
-  border: 1px solid #173E3F;
-  color: #1D1D1D;
+  border: 1px solid #173e3f;
+  color: #1d1d1d;
   font-size: 0.8rem;
   margin: 4px 4px;
   background: transparent;
@@ -107,7 +109,7 @@ const SubmitButton = styled.button`
   height: 42px;
   width: 80%;
   color: white;
-  background-color: #00D09C;
+  background-color: #00d09c;
   border: none;
   border-radius: 5px;
   font-size: 18px;

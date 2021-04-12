@@ -13,27 +13,29 @@ class ActionProvider {
   };
 
   raiseTicket = () => {
-    console.log("raise ticket")
-    const message = this.createChatBotMessage("No FAQs found related to this topic. You can a raise a ticket.", {
-      widget: "raiseTicket",
-      withAvatar: true,
-      delay: 500
-    })
-    this.addMessageToBotState(message)
-  }
+    console.log("raise ticket");
+    const message = this.createChatBotMessage(
+      "No FAQs found related to this topic. You can a raise a ticket.",
+      {
+        widget: "raiseTicket",
+        withAvatar: true,
+        delay: 500,
+      }
+    );
+    this.addMessageToBotState(message);
+  };
 
   handleFaqTap = (faqId) => {
-    axios.get(`/api/v1/faq/${faqId}`)
-    .then((res) => {
+    axios.get(`/api/v1/faq/${faqId}`).then((res) => {
       if (res.status === 200) {
         const message = this.createChatBotMessage(res.data.answer);
         this.addMessageToBotState(message);
       } else {
-        const message = this.createChatBotMessage({
+        const message = this.createChatBotMessage("No relavent FAQs found", {
           widget: "raiseTicket",
           withAvatar: true,
-          delay: 500
-        })
+          delay: 500,
+        });
         this.addMessageToState(message);
       }
     });
@@ -46,29 +48,37 @@ class ActionProvider {
         message: message,
       },
     };
-    axios.get(`/api/v1/faq`, config)
-    .then((res) => {
+    axios.get(`/api/v1/faq`, config).then((res) => {
       if (res.status === 200) {
         console.log(res.data);
         if (res.data.reply) {
           const message = this.createChatBotMessage(res.data.reply.answer);
           this.addMessageToBotState(message);
         } else {
-          this.setState((state) => ({
-            ...state,
-            faqs: res.data.faqs,
-          }));
-          const message = this.createChatBotMessage("Maybe these will help", {
-            widget: "faqs",
-          });
-          this.addMessageToBotState(message);
+          if (res.data.faqs) {
+            this.setState((state) => ({
+              ...state,
+              faqs: res.data.faqs,
+            }));
+            const message = this.createChatBotMessage("Maybe these will help", {
+              widget: "faqs",
+            });
+            this.addMessageToBotState(message);
+          } else {
+            const message = this.createChatBotMessage("No relavent FAQs found",{
+              widget: "raiseTicket",
+              withAvatar: true,
+              delay: 500,
+            });
+            this.addMessageToBotState(message);
+          }
         }
       } else {
         const message = this.createChatBotMessage({
           widget: "raiseTicket",
           withAvatar: true,
-          delay: 500
-        })
+          delay: 500,
+        });
         this.addMessageToState(message);
       }
     });

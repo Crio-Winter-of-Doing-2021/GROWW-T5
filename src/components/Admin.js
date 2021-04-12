@@ -9,7 +9,7 @@ import * as yup from "yup";
 
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
-import axios from '../axios';
+import axios from "../axios";
 
 function Admin() {
   const [faqs, setfaqs] = useState([]);
@@ -22,16 +22,6 @@ function Admin() {
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
-
-  const fetchSuggestions = () => {
-    
-
-    let tags = []
-    
-    console.log(tags)
-
-    return tags
-  }
 
   const validationSchema = yup.object({
     email: yup
@@ -54,47 +44,50 @@ function Admin() {
       let config = {
         headers: {
           email: values.email,
-          password: values.password
-        }
-      }
-      axios.post('/api/v1/auth/login', {}, config)
-      .then((res) => {
-        localStorage.setItem("admintoken", res.data.token)
-      })
-      .catch((err) => console.log(err))
+          password: values.password,
+        },
+      };
+      axios
+        .post("/api/v1/auth/login", {}, config)
+        .then((res) => {
+          localStorage.setItem("admintoken", res.data.token);
+        })
+        .catch((err) => console.log(err));
       setlogin((prev) => !prev);
     },
   });
 
   const particularFaq = (ids) => {
-    axios.get(`/api/v1/faq/${ids}`)
-    .then((res) => {
-      setFaq(res.data)
-    })
-    .catch((error) => console.log(error))
+    axios
+      .get(`/api/v1/faq/${ids}`)
+      .then((res) => {
+        setFaq(res.data);
+      })
+      .catch((error) => console.log(error));
 
     onOpenModal();
   };
 
   const updateFaq = (ids) => {
-    console.log(faq)
+    console.log(faq);
     let config = {
       headers: {
-        accesstoken: localStorage.getItem("admintoken")
-      }
-    }
+        accesstoken: localStorage.getItem("admintoken"),
+      },
+    };
     let body = {
       question: faq.question,
       answer: faq.answer,
-      tags: chips
-    }
-    axios.put(`/api/v1/faq/${ids}`, body, config)
-    .then((res) => {
-      setrefresh(!refresh)
-      onCloseModal()
-    })
-    .catch((error) => console.log(error))
-  }
+      tags: chips,
+    };
+    axios
+      .put(`/api/v1/faq/${ids}`, body, config)
+      .then((res) => {
+        setrefresh(!refresh);
+        onCloseModal();
+      })
+      .catch((error) => console.log(error));
+  };
 
   useEffect(() => {
     if (localStorage.getItem("admintoken")) {
@@ -103,18 +96,19 @@ function Admin() {
 
     let config = {
       headers: {
-        accesstoken: localStorage.getItem("admintoken")
-      }
-    }
+        accesstoken: localStorage.getItem("admintoken"),
+      },
+    };
 
-    axios.get("/api/v1/faq/tags", {}, config)
-    .then((res) => setSuggestions(res.data.tags))
-    .catch((error) => console.log(error))
+    axios
+      .get("/api/v1/faq/tags", {}, config)
+      .then((res) => setSuggestions(res.data.tags))
+      .catch((error) => console.log(error));
 
-    axios.get("/api/v1/faq?type=Unanswered", {}, config)
+    axios
+      .get("/api/v1/faq?type=Unanswered", {}, config)
       .then((res) => setfaqs(res.data))
-      .catch((error) => console.log(error) );
-
+      .catch((error) => console.log(error));
   }, [refresh]);
 
   return (
@@ -180,8 +174,16 @@ function Admin() {
         <ModalContainer>
           <ModalHeading>FAQ Form</ModalHeading>
 
-          <input placeholder="Question" value={faq.question} onChange={(e) => setFaq({...faq, question: e.target.value})}/>
-          <input placeholder="Answer" value={faq.answer} onChange={(e) => setFaq({...faq, answer: e.target.value})}/>
+          <input
+            placeholder="Question"
+            value={faq.question}
+            onChange={(e) => setFaq({ ...faq, question: e.target.value })}
+          />
+          <input
+            placeholder="Answer"
+            value={faq.answer}
+            onChange={(e) => setFaq({ ...faq, answer: e.target.value })}
+          />
           <Chips
             className="chipsm"
             value={chips}
@@ -189,7 +191,6 @@ function Admin() {
             suggestions={suggestions}
           />
           <SubmitButton onClick={() => updateFaq(faq._id)}>Submit</SubmitButton>
-
         </ModalContainer>
       </Modal>
     </Container>
@@ -221,7 +222,6 @@ const Row = styled.div`
   justify-content: space-between;
   padding: 10px 12px;
   border: 1px solid lightgray;
-
   :hover{
     box-shadow: 0 1px 9px 0 lightgrey;
     cursor:pointer;
@@ -259,7 +259,6 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: 20px;
-
   input {
     width: 80%;
     margin-bottom: 15px;
@@ -269,7 +268,6 @@ const ModalContainer = styled.div`
     outline-color: #00d09c;
     font-size: 17px;
   }
-
   div{
       width:80%;
       border: 1px solid #7f7777 !important;
@@ -280,7 +278,6 @@ const ModalContainer = styled.div`
           outline:none;
       }
   }
-
   }
 `;
 

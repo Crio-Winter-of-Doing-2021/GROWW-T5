@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useRouteMatch } from "react-router-dom";
+import axios from "../../axios";
 
 function Order({ match }) {
   let categories = match.params.category;
-  console.log(categories, match.params.category);
 
   const [stocks, setStocks] = useState(false);
   const [mutualFunds, setMutualFunds] = useState(false);
@@ -13,84 +13,43 @@ function Order({ match }) {
   const [multipleOrder, setMultipleOrder] = useState([]);
 
   useEffect(() => {
+    let config = {
+      headers: {
+        accesstoken: localStorage.getItem("accesstoken")
+      },
+    }
+    console.log(config)
     if (categories == "stocks") {
       setStockColor(true);
       setStocks(true);
       setMutualFunds(false);
       setMutualColor(false);
-      setMultipleOrder(stockOrders);
+
+      axios.get("/api/v1/order?category=Stocks", config)
+        .then((response) => {
+          console.log(response.data);
+          setMultipleOrder(response.data);
+        })
+        .catch((error) => {
+          console.log("Error", error.message);
+        });
     } else if (categories == "mutual-funds") {
       setStockColor(false);
       setStocks(false);
       setMutualFunds(true);
       setMutualColor(true);
-      setMultipleOrder(fundOrders);
-    }
 
-    // axios
-    //   .post("url", authData)
-    //   .then((response) => {
-    //     console.log(response);
-    //     dispatch(authSuccess(response.data));
-    //   })
-    //   .catch((error) => {
-    //     console.log("Error", error.message);
-    //     dispatch(authFail());
-    //   });
+      axios.get("/api/v1/order?category=Mutual Fund", config)
+        .then((response) => {
+          console.log(response.data);
+          setMultipleOrder(response.data);
+        })
+        .catch((error) => {
+          console.log("Error", error.message);
+        });
+    }
   }, [categories]);
 
-  const stockOrders = [
-    {
-      name: "stock",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-    {
-      name: "stock",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-    {
-      name: "stock",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-    {
-      name: "stock",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-  ];
-  const fundOrders = [
-    {
-      name: "fund",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-    {
-      name: "fund",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-    {
-      name: "fund",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-    {
-      name: "fund",
-      Quantity: " Quantity",
-      price: "price",
-      status: "status",
-    },
-  ];
 
   return (
     <Container>
@@ -130,31 +89,27 @@ function Order({ match }) {
       </HorizontalLine>
 
       <Orders>
-        {multipleOrder.map(({ name, Quantity, price, status }) => (
-          <Row>
-            <div>{name}</div>
-            <div>{Quantity}</div>
-            <div>{price}</div>
-            <div>{status}</div>
-          </Row>
-        ))}
-        {/* {categories == "stocks"
-          ? stockOrders.map(({ name, Quantity, price, status }) => (
+        {multipleOrder.map(({ id, product, orderSpecs, status }) =>
+          product.category === "Stocks" ? (
+            <Link to={`/order/stock/${id}`}>
               <Row>
-                <div>{name}</div>
-                <div>{Quantity}</div>
-                <div>{price}</div>
+                <div>{product.name}</div>
+                <div>{orderSpecs.quantity}</div>
+                <div>{orderSpecs.orderType}</div>
                 <div>{status}</div>
               </Row>
-            ))
-          : fundOrders.map(({ name, Quantity, price, status }) => (
+            </Link>
+          ) : (
+            <Link to={`/order/fund/${id}`}>
               <Row>
-                <div>{name}</div>
-                <div>{Quantity}</div>
-                <div>{price}</div>
+                <div>{product.name}</div>
+                <div>{orderSpecs.investType}</div>
+                <div>{orderSpecs.sipAmount}</div>
                 <div>{status}</div>
               </Row>
-            ))} */}
+            </Link>
+          )
+        )}
       </Orders>
     </Container>
   );
@@ -178,7 +133,6 @@ const Stocks = styled.div`
   margin-right: 4%;
   margin-left: 0.4%;
   color: #00d09c;
-
   a {
     text-decoration: none;
     color: black;
@@ -188,7 +142,6 @@ const Stocks = styled.div`
 const MutualFunds = styled.div`
   margin-right: 4%;
   color: black;
-
   a {
     text-decoration: none;
     color: black;
@@ -227,6 +180,10 @@ const Orders = styled.div`
   padding-right: 12%;
   padding-top: 30px;
   padding-bottom: 30px;
+
+  a {
+    color: black;
+  }
 `;
 const Row = styled.div`
   display: flex;
@@ -235,7 +192,6 @@ const Row = styled.div`
   border: 1px solid lightgray;
   border-right: none;
   border-left: none;
-
   :hover{
     box-shadow: 0 1px 9px 0 lightgrey;
     cursor:pointer;

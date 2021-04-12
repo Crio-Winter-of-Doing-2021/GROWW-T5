@@ -7,11 +7,11 @@ import RaiseTicket from "./Widgets/RaiseTicket";
 
 const getGreeting = () => {
   if (localStorage.getItem("name")) {
-    return `Hello ${localStorage.getItem("name")}. I am GrowwBot`
+    return `Hello ${localStorage.getItem("name")}. I am GrowwBot`;
   } else {
-    return `Hello! I'm GrowwBot`
+    return `Hello! I'm GrowwBot`;
   }
-}
+};
 
 const config = {
   initialMessages: [
@@ -20,7 +20,7 @@ const config = {
       withAvatar: false,
       delay: 500,
       widget: "faqs",
-    })
+    }),
   ],
   state: {
     faqs: null,
@@ -46,7 +46,7 @@ const config = {
     {
       widgetName: "raiseTicket",
       widgetFunc: (props) => <RaiseTicket {...props} />,
-    }
+    },
   ],
 };
 

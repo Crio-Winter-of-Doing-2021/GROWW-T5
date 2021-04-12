@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import TextField from "@material-ui/core/TextField";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+
 import { useFormik } from "formik";
 import * as yup from "yup";
 import * as actions from "../../redux/action";
@@ -39,7 +38,6 @@ function Signup({ setlogin, setIsUSerLogged, onClose, onAuth }) {
       onAuth(values.name, values.email, values.password);
       setIsUSerLogged((prev) => !prev);
       onClose((prev) => !prev);
-      // alert(JSON.stringify(values, null, 2));
     },
   });
   return (
@@ -78,24 +76,13 @@ function Signup({ setlogin, setIsUSerLogged, onClose, onAuth }) {
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
           />
-          <FormControlLabel
-            value="end"
-            control={
-              <Checkbox
-                checked={checked}
-                onChange={handleChange}
-                color="primary"
-              />
-            }
-            label="KYC"
-            labelPlacement="end"
-          />
+
           <Button color="primary" variant="contained" fullWidth type="submit">
             Submit
           </Button>
         </form>
       </InputContainer>
-      {/* <SubmitButton>Submit</SubmitButton> */}
+
       <LoginLinkContainer>
         Already have an account?{" "}
         <LoginLink onClick={() => setlogin((prev) => !prev)}>Login</LoginLink>
@@ -111,8 +98,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(null, mapDispatchToProps)(Signup);
-
-// export default Signup;
 
 const SignupContainer = styled.div`
   width: 450px;
@@ -138,7 +123,6 @@ const InputContainer = styled.div`
 const LoginLink = styled.span`
   cursor: pointer;
   font-weight: 800;
-
   :hover {
     color: #00d09c;
     text-decoration: underline;
