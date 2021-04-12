@@ -77,6 +77,10 @@ productSchema.methods.getPayload = async function() {
         id: product.id,
         name: product.name,
         category: product.category,
+        about: product.about,
+        img: product.img,
+        price: product.price,
+        rate: product.rate,
         specifications: specs
     }
 }
