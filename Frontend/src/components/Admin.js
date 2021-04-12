@@ -73,24 +73,42 @@ function Admin() {
   };
 
   const updateFaq = (ids) => {
-    console.log(faq);
-    let config = {
-      headers: {
-        accesstoken: localStorage.getItem("admintoken"),
-      },
-    };
-    let body = {
-      question: faq.question,
-      answer: faq.answer,
-      tags: chips,
-    };
-    axios
-      .put(`/api/v1/faq/${ids}`, body, config)
-      .then((res) => {
-        setrefresh(!refresh);
-        onCloseModal();
-      })
-      .catch((error) => console.log(error));
+    if (!ids) {
+      let config = {
+        headers: {
+          accesstoken: localStorage.getItem("admintoken"),
+        },
+      };
+      let body = {
+        question: faq.question,
+        answer: faq.answer,
+        tags: chips,
+      };
+      axios
+        .post(`url`, body, config)
+        .then((res) => {
+          onCloseModal();
+        })
+        .catch((error) => console.log(error));
+    } else {
+      let config = {
+        headers: {
+          accesstoken: localStorage.getItem("admintoken"),
+        },
+      };
+      let body = {
+        question: faq.question,
+        answer: faq.answer,
+        tags: chips,
+      };
+      axios
+        .put(`/api/v1/faq/${ids}`, body, config)
+        .then((res) => {
+          setrefresh(!refresh);
+          onCloseModal();
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   useEffect(() => {
@@ -114,6 +132,15 @@ function Admin() {
       .then((res) => setfaqs(res.data))
       .catch((error) => console.log(error));
   }, [refresh]);
+
+  const logout = () => {
+    setlogin(true);
+    localStorage.removeItem("admintoken");
+  };
+
+  const addFaq = () => {
+    onOpenModal();
+  };
 
   return (
     <Container>
@@ -160,7 +187,10 @@ function Admin() {
         </SignupContainer>
       ) : (
         <Container>
-          <Heading>UNANSWERED FAQS</Heading>
+          <Header>
+            <Heading>UNANSWERED FAQS</Heading>
+            <LogOutButton onClick={logout}>LOG OUT</LogOutButton>
+          </Header>
           <Orders>
             {faqs.map(({ question, _id }) => (
               <Row
@@ -172,6 +202,7 @@ function Admin() {
               </Row>
             ))}
           </Orders>
+          <AddFaqButton onClick={addFaq}>ADD FAQ</AddFaqButton>
         </Container>
       )}
 
@@ -305,3 +336,36 @@ const SubmitButton = styled.button`
   outline: none;
   margin-top: 20px;
 `;
+
+const LogOutButton = styled.button`
+  height: 42px;
+  width: 10%;
+  color: white;
+  background-color: #00d09c;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  margin-top: 20px;
+  position: absolute;
+  right: 120px;
+  top: 26px;
+`;
+
+const AddFaqButton = styled.button`
+  height: 44px;
+  width: 23%;
+  color: white;
+  background-color: #00d09c;
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  margin-top: 20px;
+`;
+
+const Header = styled.div``;

@@ -46,7 +46,7 @@ function Header({ userData }) {
       <UserInformation>
         <Avatar
           alt="Priyansh Jain"
-          src="https://lh6.googleusercontent.com/-KDVPU093UXA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuckkBhm-U1PiqlA0y7o_zyNt4xMQLQ/s96-c/photo.jpg"
+          src="https://e7.pngegg.com/pngimages/722/477/png-clipart-computer-icons-user-profile-avatar-face-heroes.png"
         />
         <NameAndEmail>
           <Name>{userData.name}</Name>
@@ -159,7 +159,7 @@ function Header({ userData }) {
             <Dropdown overlay={menu} trigger={["click"]} placement="bottomLeft">
               <Avatar
                 alt="Priyansh Jain"
-                src="https://lh6.googleusercontent.com/-KDVPU093UXA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuckkBhm-U1PiqlA0y7o_zyNt4xMQLQ/s96-c/photo.jpg"
+                src="https://e7.pngegg.com/pngimages/722/477/png-clipart-computer-icons-user-profile-avatar-face-heroes.png"
               ></Avatar>
               {/* <ExpandMoreIcon /> */}
             </Dropdown>
