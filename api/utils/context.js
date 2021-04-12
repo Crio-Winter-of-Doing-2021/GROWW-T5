@@ -79,11 +79,11 @@ class Context {
         }
 
         if (context.product) {
-            tags.push(context.product.name)
+            tags.push(context.product.name.toLowerCase().replace(/\s+/g, ""))
         }
 
         if (context.order) {
-            tags.push(context.order.product.name)
+            tags.push(context.order.product.name.toLowerCase().replace(/\s+/g, ""))
             if (context.order.status === "OnGoing") {
                 tags.push("ongoingorder")
             }
