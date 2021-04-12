@@ -65,11 +65,14 @@ class ActionProvider {
             });
             this.addMessageToBotState(message);
           } else {
-            const message = this.createChatBotMessage("No relavent FAQs found",{
-              widget: "raiseTicket",
-              withAvatar: true,
-              delay: 500,
-            });
+            const message = this.createChatBotMessage(
+              "No relavent FAQs found",
+              {
+                widget: "raiseTicket",
+                withAvatar: true,
+                delay: 500,
+              }
+            );
             this.addMessageToBotState(message);
           }
         }

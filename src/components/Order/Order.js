@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "../../axios";
 
 function Order({ match }) {
@@ -15,17 +15,18 @@ function Order({ match }) {
   useEffect(() => {
     let config = {
       headers: {
-        accesstoken: localStorage.getItem("accesstoken")
+        accesstoken: localStorage.getItem("accesstoken"),
       },
-    }
-    console.log(config)
-    if (categories == "stocks") {
+    };
+    console.log(config);
+    if (categories === "stocks") {
       setStockColor(true);
       setStocks(true);
       setMutualFunds(false);
       setMutualColor(false);
 
-      axios.get("/api/v1/order?category=Stocks", config)
+      axios
+        .get("/api/v1/order?category=Stocks", config)
         .then((response) => {
           console.log(response.data);
           setMultipleOrder(response.data);
@@ -33,13 +34,14 @@ function Order({ match }) {
         .catch((error) => {
           console.log("Error", error.message);
         });
-    } else if (categories == "mutual-funds") {
+    } else if (categories === "mutual-funds") {
       setStockColor(false);
       setStocks(false);
       setMutualFunds(true);
       setMutualColor(true);
 
-      axios.get("/api/v1/order?category=Mutual Fund", config)
+      axios
+        .get("/api/v1/order?category=Mutual Fund", config)
         .then((response) => {
           console.log(response.data);
           setMultipleOrder(response.data);
@@ -49,7 +51,6 @@ function Order({ match }) {
         });
     }
   }, [categories]);
-
 
   return (
     <Container>
@@ -180,7 +181,6 @@ const Orders = styled.div`
   padding-right: 12%;
   padding-top: 30px;
   padding-bottom: 30px;
-
   a {
     color: black;
   }

@@ -15,11 +15,10 @@ import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import DateRangeOutlinedIcon from "@material-ui/icons/DateRangeOutlined";
 import BookmarkBorderOutlinedIcon from "@material-ui/icons/BookmarkBorderOutlined";
-import TextField from "@material-ui/core/TextField";
 import AuthModal from "./Auth/AuthModal";
 import "react-responsive-modal/styles.css";
 import "antd/dist/antd.css";
-import axios from "../axios";
+import axios from "axios";
 
 function Header({ userData }) {
   const [isUserLogged, setIsUSerLogged] = useState(false);
@@ -47,7 +46,7 @@ function Header({ userData }) {
       <UserInformation>
         <Avatar
           alt="Priyansh Jain"
-          src="https://lh6.googleusercontent.com/-KDVPU093UXA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuckkBhm-U1PiqlA0y7o_zyNt4xMQLQ/s96-c/photo.jpg"
+          src="https://e7.pngegg.com/pngimages/722/477/png-clipart-computer-icons-user-profile-avatar-face-heroes.png"
         />
         <NameAndEmail>
           <Name>{userData.name}</Name>
@@ -59,9 +58,9 @@ function Header({ userData }) {
         onClick={() => {
           let config = {
             headers: {
-              accesstoken: localStorage.getItem("accesstoken")
-            }
-          }
+              accesstoken: localStorage.getItem("accesstoken"),
+            },
+          };
           axios
             .get("/api/v1/auth/kyc", config)
             .then((res) => {
@@ -160,7 +159,7 @@ function Header({ userData }) {
             <Dropdown overlay={menu} trigger={["click"]} placement="bottomLeft">
               <Avatar
                 alt="Priyansh Jain"
-                src="https://lh6.googleusercontent.com/-KDVPU093UXA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuckkBhm-U1PiqlA0y7o_zyNt4xMQLQ/s96-c/photo.jpg"
+                src="https://e7.pngegg.com/pngimages/722/477/png-clipart-computer-icons-user-profile-avatar-face-heroes.png"
               ></Avatar>
               {/* <ExpandMoreIcon /> */}
             </Dropdown>

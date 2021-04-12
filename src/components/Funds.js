@@ -1,51 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 import Card from "./Card";
+import axios from "../axios";
+import { useState, useEffect} from "react";
 
 function Funds() {
-  const fundsArray = [
-    {
-      category: "funds",
-      id: "icici-prudential-technology-direct-plan-growth",
-      img: "https://groww.in/images/partners/icici_groww.svg",
-      cardname: "ICICI Prudential Technology Direct Plan Growth",
-      cardprice: "29.4%",
-      cardrate: "(3Y)",
-    },
-    {
-      category: "funds",
-      id: "axis-bluechip-fund-direct-plan-growth",
-      img: "https://groww.in/images/partners/axis_groww.svg",
-      cardname: "Axis Bluechip Fund Direct Plan Growth",
-      cardprice: "18.1%",
-      cardrate: "(3Y)",
-    },
-    {
-      category: "funds",
-      id: "tata-digital-india-fund-direct-growth",
-      img: "https://groww.in/images/partners/tata_groww.svg",
-      cardname: "Tata Digital India Fund Direct Growth",
-      cardprice: "30.4%",
-      cardrate: "(3Y)",
-    },
-    {
-      category: "funds",
-      id: "uti-nifty-index-fund-direct-growth",
-      img: "https://groww.in/images/partners/uti_groww.svg",
-      cardname: "UTI Nifty Index Fund Direct Growth",
-      cardprice: "14.3%",
-      cardrate: "(3Y)",
-    },
-  ];
+  const [funds, setfunds] = useState(null);
+
+  useEffect(() => {
+    axios.get("/api/v1/product?category=Mutual Fund")
+    .then((res) => setfunds(res.data))
+    .catch((err) => console.log(err))
+    console.log(funds)
+  }, [])
+
   return (
     <Container>
-      {fundsArray.map(({ id, img, cardname, cardprice, cardrate }) => (
+      {funds && funds.map(({ id, img, name, price, rate }) => (
         <Card
+          key={id}
           id={id}
           img={img}
-          cardname={cardname}
-          cardprice={cardprice}
-          cardrate={cardrate}
+          cardname={name}
+          cardprice={price}
+          cardrate={rate}
         />
       ))}
     </Container>

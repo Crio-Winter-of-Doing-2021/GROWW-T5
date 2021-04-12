@@ -34,14 +34,6 @@ export const authLogin = (email, password, setIsUSerLogged, onClose) => {
       },
     };
 
-    // if (email == "priyansh@pr.pr" && password == "priyansh1") {
-    //   dispatch(authSuccess({ email }));
-    //   setIsUSerLogged((prev) => !prev);
-    //   onClose((prev) => !prev);
-    // } else {
-    //   dispatch(authFail("Invalid Credentials"));
-    // }
-
     axios
       .post("/api/v1/auth/login", {}, authData)
       .then((response) => {

@@ -36,7 +36,7 @@ function BotAvatar() {
   return (
     <BotAvatarContainer>
       <img
-        alt="Bot Image"
+        alt="Bot"
         src="https://techunfolded.com/wp-content/uploads/2020/04/Groww-Mutual-fund-app.jpg"
       />
     </BotAvatarContainer>

@@ -9,29 +9,12 @@ function SorderDescription() {
 
   const [stock, setstock] = useState(null);
 
-  // {
-  //     "id": "60619bfd64e1ed01023e5cfd",
-  //     "userId": "60463181cba7c314708dd0e3",
-  //     "product": {
-  //         "_id": "6048bd1663b624029fa2ca30",
-  //         "name": "Apple",
-  //         "category": "Stocks",
-  //         "specifications": "6048bd1663b624029fa2ca2f",
-  //         "__v": 0
-  //     },
-  //     "orderSpecs": {
-  //         "quantity": 112365,
-  //         "orderType": "Buy"
-  //     },
-  //     "status": "OnGoing"
-  // }
-
   useEffect(() => {
     let config = {
       headers: {
-        accesstoken: localStorage.getItem('accesstoken')
-      }
-    }
+        accesstoken: localStorage.getItem("accesstoken"),
+      },
+    };
     axios
       .get(`api/v1/order/${id}`, config)
       .then((res) => setstock(res.data))
@@ -47,21 +30,25 @@ function SorderDescription() {
           Back
         </Link>
       </FundLink>
-      { stock && <DetailCard>
-        <h1 style={{ marginTop: "21px", fontSize: "34px" }}>{stock.product.name}</h1>
-        <Row>
-          <h2>QUANTITY</h2>
-          <h2>{stock.orderSpecs.quantity}</h2>
-        </Row>
-        <Row>
-          <h2>ORDER TYPE</h2>
-          <h2>{stock.orderSpecs.orderType}</h2>
-        </Row>
-        <Row>
-          <h2>STATUS</h2>
-          <h2>{stock.status}</h2>
-        </Row>
-      </DetailCard>}
+      {stock && (
+        <DetailCard>
+          <h1 style={{ marginTop: "21px", fontSize: "34px" }}>
+            {stock.product.name}
+          </h1>
+          <Row>
+            <h2>QUANTITY</h2>
+            <h2>{stock.orderSpecs.quantity}</h2>
+          </Row>
+          <Row>
+            <h2>ORDER TYPE</h2>
+            <h2>{stock.orderSpecs.orderType}</h2>
+          </Row>
+          <Row>
+            <h2>STATUS</h2>
+            <h2>{stock.status}</h2>
+          </Row>
+        </DetailCard>
+      )}
     </Container>
   );
 }
@@ -79,7 +66,6 @@ const FundLink = styled.div`
   cursor: pointer;
   font-weight: 800;
   text-align: start;
-
   a {
     color: black;
     display: flex;
@@ -88,7 +74,6 @@ const FundLink = styled.div`
     color: #00d09c;
     text-decoration: underline;
   }
-
   .MuiSvgIcon-root {
     width: 13px;
   }
@@ -110,9 +95,7 @@ const Row = styled.div`
   width:54%;
   justify-content: space-between;
   padding: 12px 5px;
-
   border-right: none;
   border-left: none;
-
 }
 `;

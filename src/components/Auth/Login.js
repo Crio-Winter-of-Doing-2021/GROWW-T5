@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import styled, { keyframes } from "styled-components";
+import React from "react";
+import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import * as actions from "../../redux/action";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
-const axios = require("axios");
 
 function Login({ setlogin, setIsUSerLogged, onClose, onAuth, error }) {
   const validationSchema = yup.object({
@@ -114,39 +113,6 @@ const LoginHeader = styled.h1`
 
 const InputContainer = styled.div`
   width: 80%;
-`;
-
-const EmailInput = styled.div`
-  width: 100%;
-  margin-bottom: 30px;
-  input {
-    width: 97%;
-    height: 30px;
-    font-size: 17px;
-  }
-`;
-
-const PasswordInput = styled.div`
-  width: 100%;
-  margin-bottom: 30px;
-  input {
-    width: 97%;
-    height: 30px;
-    font-size: 17px;
-  }
-`;
-
-const SubmitButton = styled.button`
-  height: 42px;
-  width: 80%;
-  color: white;
-  background-color: #00d09c;
-  border: none;
-  border-radius: 5px;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  outline: none;
 `;
 
 const SignupLink = styled.span`

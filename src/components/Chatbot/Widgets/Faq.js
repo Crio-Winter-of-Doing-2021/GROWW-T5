@@ -10,18 +10,18 @@ const Faqs = (props) => {
     if (props.faqs) {
       setfaqs(props.faqs);
     } else {
-      let params = {}
+      let params = {};
 
       params.pageId = window.location.href.split("/")[3];
 
-      if (params.pageId == "stock" || params.pageId == "mutual-fund") {
+      if (params.pageId === "stock" || params.pageId === "mutual-fund") {
         params.productId = window.location.href.split("/")[4];
       }
 
-      if (params.pageId == "order") {
+      if (params.pageId === "order") {
         params.orderId = window.location.href.split("/")[5];
       }
-      console.log(params)
+      console.log(params);
       let config = {
         headers: { accesstoken: localStorage.getItem("accesstoken") },
         params: params,
