@@ -18,7 +18,7 @@ import BookmarkBorderOutlinedIcon from "@material-ui/icons/BookmarkBorderOutline
 import AuthModal from "./Auth/AuthModal";
 import "react-responsive-modal/styles.css";
 import "antd/dist/antd.css";
-import axios from "axios";
+import axios from "../axios";
 
 function Header({ userData }) {
   const [isUserLogged, setIsUSerLogged] = useState(false);
