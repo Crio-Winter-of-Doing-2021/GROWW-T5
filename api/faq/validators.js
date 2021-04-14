@@ -8,8 +8,7 @@ const raiseFAQTicket = {
     body: Joi.object({
         question: Joi.string()
             .required(),
-        answer: Joi.string()
-            .required(),
+        answer: Joi.string(),
         tags: Joi.array()
     })
 }
