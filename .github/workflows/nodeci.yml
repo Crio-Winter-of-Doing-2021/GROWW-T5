@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: false
+      REACT_APP_BAKCEND_URL: ${{secrets.REACT_APP_BAKCEND_URL}}
 
     strategy:
       matrix:
